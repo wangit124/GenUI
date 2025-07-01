@@ -25,7 +25,7 @@ import {
   Settings,
   Package,
 } from "lucide-react";
-import { useGlobalFormStore } from "@/hooks/use-global-form-store";
+import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import { GeneratedFile } from "@/lib/types";
 
 interface DirectoryItem {

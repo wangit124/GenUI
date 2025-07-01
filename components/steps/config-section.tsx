@@ -19,7 +19,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Code, Package } from "lucide-react";
-import { useGlobalFormStore } from "@/hooks/use-global-form-store";
+import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import { Configuration } from "@/lib/types";
 import {
   uiLibraries,

@@ -1,6 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
@@ -10,8 +9,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { Upload, X, Link } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useGlobalFormStore } from "@/hooks/use-global-form-store";
-import { useConvertFigmaFile } from "@/hooks/use-convert-figma-file";
+import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
+import { useConvertFigmaFile } from "@/hooks/useConvertFigmaFile";
+import { useToast } from "@/hooks/useToast";
 
 export default function UploadSection() {
   const { uploadedFiles, setUploadedFiles, figmaImages, setFigmaImages } =
@@ -20,6 +20,8 @@ export default function UploadSection() {
   const [figmaUrl, setFigmaUrl] = useState("");
 
   const { mutate: convertFigmaFile, isPending } = useConvertFigmaFile();
+
+  const { toast: showToast } = useToast();
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -49,9 +51,18 @@ export default function UploadSection() {
         onSuccess: (data) => {
           setFigmaImages([...figmaImages, ...(data?.images || [])]);
           setFigmaUrl("");
+          showToast({
+            title: "Success",
+            description: "Figma file converted to image",
+            variant: "default",
+          });
         },
         onError: () => {
-          toast.error("Failed to convert figma image, please try again.");
+          showToast({
+            title: "Error",
+            description: "Failed to convert figma image, please try again.",
+            variant: "destructive",
+          });
         },
       }
     );

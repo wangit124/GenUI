@@ -19,9 +19,9 @@ import PreviewSection from "@/components/steps/preview-section";
 import ExportSection from "@/components/steps/export-section";
 import { StepType } from "@/lib/types";
 import { steps } from "@/lib/constants";
-import { useStepsStore } from "@/hooks/use-steps-store";
+import { useStepsStore } from "@/hooks/useStepsStore";
 import { cn } from "@/lib/utils";
-import { useGlobalFormStore } from "@/hooks/use-global-form-store";
+import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 
 export default function StepWrapper() {
   const { currentStep, setCurrentStep, completedSteps, addCompletedStep } =

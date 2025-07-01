@@ -20,7 +20,7 @@ import {
   Copy,
   Check,
 } from "lucide-react";
-import { useGlobalFormStore } from "@/hooks/use-global-form-store";
+import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import Image from "next/image";
 import { GeneratedFile, GeneratedResponse } from "@/lib/types";
 

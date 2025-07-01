@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Code, Monitor, Smartphone, Tablet } from "lucide-react";
-import { useGlobalFormStore } from "@/hooks/use-global-form-store";
+import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import Image from "next/image";
 
 export default function PreviewSection() {

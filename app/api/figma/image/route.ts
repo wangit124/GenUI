@@ -12,12 +12,15 @@ export async function POST(request: Request) {
   }
 
   const [, , file_key] = matches;
+
   const figmaResponse = await fetch(
     `https://api.figma.com/v1/images/${file_key}?ids=${nodeIds}`,
     {
-      headers: {
-        "X-Figma-Token": process.env.FIGMA_TOKEN,
-      },
+      headers: process.env.FIGMA_TOKEN
+        ? {
+            "X-Figma-Token": process.env.FIGMA_TOKEN,
+          }
+        : undefined,
     }
   );
   const figmaData = await figmaResponse.json();
