@@ -2,13 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -24,6 +18,16 @@ import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import Image from "next/image";
 import { GeneratedFile, GeneratedResponse } from "@/lib/types";
 
+const fullAppSteps = [
+  { step: "Initializing MCP server connection...", progress: 10 },
+  { step: "Analyzing component structure...", progress: 25 },
+  { step: "Generating component files...", progress: 45 },
+  { step: "Creating application structure...", progress: 65 },
+  { step: "Applying styling and configuration...", progress: 80 },
+  { step: "Optimizing and finalizing code...", progress: 95 },
+  { step: "Generation complete!", progress: 100 },
+];
+
 export default function GenerateSection() {
   const {
     uploadedFiles,
@@ -36,8 +40,6 @@ export default function GenerateSection() {
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generationStep, setGenerationStep] = useState("");
   const [generationComplete, setGenerationComplete] = useState(false);
-  const [isExtracting, setIsExtracting] = useState(false);
-  const [extractionProgress, setExtractionProgress] = useState(0);
   const [copiedIds, setCopiedIds] = useState<Set<string>>(new Set());
 
   const copyToClipboard = async (text: string, id: string) => {
@@ -56,25 +58,16 @@ export default function GenerateSection() {
     }
   };
 
-  const extractComponents = async () => {
-    setIsExtracting(true);
-    setExtractionProgress(0);
+  const generateFullApp = async () => {
+    setIsGenerating(true);
+    setGenerationProgress(0);
+    setGenerationComplete(false);
 
-    // Simulate component extraction process
-    const steps = [
-      "Analyzing uploaded designs...",
-      "Identifying UI patterns...",
-      "Extracting components...",
-      "Generating component metadata...",
-      "Finalizing component library...",
-    ];
-
-    for (let i = 0; i < steps.length; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setExtractionProgress((i + 1) * 20);
+    for (const { step, progress } of fullAppSteps) {
+      setGenerationStep(step);
+      setGenerationProgress(progress);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
     }
-
-    // Mock extracted components
     const mockComponents: GeneratedFile[] = [
       {
         id: "mobile-status-bar",
@@ -97,36 +90,7 @@ export default function GenerateSection() {
         code: 'import Image from "next/image"\n\nconst photos = [\n  "/placeholder.svg?height=150&width=150",\n  "/placeholder.svg?height=150&width=150",\n  "/placeholder.svg?height=150&width=150",\n  "/placeholder.svg?height=150&width=150",\n]\n\nexport function PhotoGallery() {\n  return (\n    <div className="grid grid-cols-2 gap-2 px-6 pb-20">\n      {photos.map((photo, index) => (\n        <div key={index} className="aspect-square relative">\n          <Image\n            src={photo || "/placeholder.svg"}\n            alt={`Photo ${index + 1}`}\n            fill\n            className="object-cover rounded-lg"\n          />\n        </div>\n      ))}\n    </div>\n  )\n}',
       },
     ];
-    setGeneratedResponse({
-      ...(generatedResponse || {}),
-      sharedComponents: mockComponents,
-    });
-    setIsExtracting(false);
-    setExtractionProgress(100);
-  };
 
-  const generateFullApp = async () => {
-    setIsGenerating(true);
-    setGenerationProgress(0);
-    setGenerationComplete(false);
-
-    const steps = [
-      { step: "Initializing MCP server connection...", progress: 10 },
-      { step: "Analyzing component structure...", progress: 25 },
-      { step: "Generating component files...", progress: 45 },
-      { step: "Creating application structure...", progress: 65 },
-      { step: "Applying styling and configuration...", progress: 80 },
-      { step: "Optimizing and finalizing code...", progress: 95 },
-      { step: "Generation complete!", progress: 100 },
-    ];
-
-    for (const { step, progress } of steps) {
-      setGenerationStep(step);
-      setGenerationProgress(progress);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-    }
-
-    // Mock generated code structure
     const mockGeneratedCode: GeneratedResponse["full"] = {
       files: [
         {
@@ -189,280 +153,156 @@ export default function GenerateSection() {
         "public/images": ["jane-profile.png", "register-screen.png"],
       },
     };
-    setGeneratedResponse({ ...generatedResponse, full: mockGeneratedCode });
+    setGeneratedResponse({
+      ...generatedResponse,
+      sharedComponents: mockComponents,
+      full: mockGeneratedCode,
+    });
     setGenerationComplete(true);
     setIsGenerating(false);
   };
 
   return (
     <div className="space-y-6">
-      {/* Step 1: Extract Components */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Upload className="h-5 w-5" />
-            Extract Components
+            Uploaded Files
           </CardTitle>
-          <CardDescription>
-            First, extract reusable components from your uploaded designs and
-            Figma links
-          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <h4 className="font-medium mb-2">Uploaded Files</h4>
-              <div className="grid gap-2">
-                {uploadedFiles.map((file, index) => (
-                  <Card key={index}>
-                    <CardContent className="flex justify-between p-3">
-                      <div className="flex items-center gap-3">
-                        <Image
-                          src={URL.createObjectURL(file)}
-                          alt={file.name}
-                          width={0}
-                          height={0}
-                          style={{ width: 150, height: "auto" }}
-                        />
-                        <div>
-                          <p className="text-sm font-medium">{file.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {(file.size / 1024 / 1024).toFixed(2)} MB
-                          </p>
-                        </div>
+            <div className="grid gap-2">
+              {uploadedFiles.map((file, index) => (
+                <Card key={index}>
+                  <CardContent className="flex justify-between p-3">
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        width={0}
+                        height={0}
+                        style={{ width: 150, height: "auto" }}
+                      />
+                      <div>
+                        <p className="text-sm font-medium">{file.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {(file.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-                {figmaImages.map((image, index) => (
-                  <Card key={index}>
-                    <CardContent className="flex justify-between p-3">
-                      <div className="flex items-center gap-3">
-                        <Image
-                          src={image}
-                          alt={image}
-                          width={0}
-                          height={0}
-                          style={{ width: 150, height: "auto" }}
-                        />
-                        <p className="text-sm font-medium">{image}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between pt-4 border-t">
-            <div>
-              <p className="font-medium">Ready to Extract Components</p>
-              <p className="text-sm text-muted-foreground">
-                Analyze your designs to identify reusable UI components
-              </p>
-            </div>
-            <Button
-              onClick={extractComponents}
-              disabled={
-                (uploadedFiles.length === 0 && figmaImages.length === 0) ||
-                isExtracting
-              }
-              size="lg"
-            >
-              {isExtracting ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Extracting...
-                </>
-              ) : (
-                <>
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                  Extract Components
-                </>
-              )}
-            </Button>
-          </div>
-
-          {isExtracting && (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span>Extracting components...</span>
-                <span>{extractionProgress}%</span>
-              </div>
-              <Progress value={extractionProgress} className="w-full" />
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Step 2: Component Library (only shown after extraction) */}
-      {!!generatedResponse?.sharedComponents?.length && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Code2 className="h-5 w-5" />
-              Component Library
-            </CardTitle>
-            <CardDescription>
-              Review and manage your extracted components before generating the
-              full application
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Components Grid */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {generatedResponse?.sharedComponents?.map((component) => (
-                <Card
-                  key={component.id}
-                  className="group hover:shadow-md transition-shadow"
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <CardTitle className="text-lg">
-                        {component.fileName}
-                      </CardTitle>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="relative">
-                      <Button
-                        size="sm"
-                        className="absolute top-2 right-2 z-10"
-                        onClick={() =>
-                          copyToClipboard(component.code, component.id)
-                        }
-                      >
-                        {copiedIds.has(component.id) ? (
-                          <Check className="h-4 w-4" />
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </Button>
-                      <pre className="bg-muted rounded-md p-4 text-sm overflow-x-auto">
-                        <code className="language-typescript">
-                          {component.code}
-                        </code>
-                      </pre>
+                  </CardContent>
+                </Card>
+              ))}
+              {figmaImages.map((image, index) => (
+                <Card key={index}>
+                  <CardContent className="flex justify-between p-3">
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={image}
+                        alt={image}
+                        width={0}
+                        height={0}
+                        style={{ width: 150, height: "auto" }}
+                      />
+                      <p className="text-sm font-medium">{image}</p>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Step 3: Generate Code */}
-      {!!generatedResponse?.sharedComponents?.length && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Full App Generation</CardTitle>
-            <CardDescription>
-              Generate your application with the configured settings
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {!isGenerating && !generationComplete && (
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Ready to Generate</p>
-                  <p className="text-sm text-muted-foreground">
-                    This will create a complete application with your components
-                  </p>
-                </div>
-                <Button onClick={generateFullApp} size="lg">
-                  <Play className="h-4 w-4 mr-2" />
-                  Generate App
-                </Button>
+          </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Code2 className="h-5 w-5" />
+            {generationComplete ? "Generation Complete" : "Ready to Generate"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {!isGenerating && !generationComplete && (
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">Ready to Generate</p>
+                <p className="text-sm text-muted-foreground">
+                  This will create a complete application with your components
+                </p>
               </div>
-            )}
-
-            {isGenerating && (
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="font-medium">Generating...</span>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-sm">
-                    <span>{generationStep}</span>
-                    <span>{generationProgress}%</span>
-                  </div>
-                  <Progress value={generationProgress} className="w-full" />
-                </div>
+              <Button onClick={generateFullApp} size="lg">
+                <Play className="h-4 w-4 mr-2" />
+                Generate App
+              </Button>
+            </div>
+          )}
+          {isGenerating && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span className="font-medium">Generating...</span>
               </div>
-            )}
-
-            {generationComplete && (
-              <div className="space-y-4">
-                <Alert>
-                  <CheckCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    Code generation completed successfully!{" "}
-                    {generatedResponse?.full?.files?.length || 0} files
-                    generated.
-                  </AlertDescription>
-                </Alert>
-
-                {/* Components Grid */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {generatedResponse?.full?.files?.map((component) => (
-                    <Card
-                      key={component.id}
-                      className="group hover:shadow-md transition-shadow"
-                    >
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <CardTitle className="text-lg">
-                            {component.fileName}
-                          </CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="relative">
-                          <Button
-                            size="sm"
-                            className="absolute top-2 right-2 z-10"
-                            onClick={() =>
-                              copyToClipboard(component.code, component.id)
-                            }
-                          >
-                            {copiedIds.has(component.id) ? (
-                              <Check className="h-4 w-4" />
-                            ) : (
-                              <Copy className="h-4 w-4" />
-                            )}
-                          </Button>
-                          <pre className="bg-muted rounded-md p-4 text-sm overflow-x-auto">
-                            <code className="language-typescript">
-                              {component.code}
-                            </code>
-                          </pre>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span>{generationStep}</span>
+                  <span>{generationProgress}%</span>
                 </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">Generation Complete</p>
-                    <p className="text-sm text-muted-foreground">
-                      Your application is ready for preview
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button onClick={() => setGenerationComplete(false)}>
-                      <Code2 className="h-4 w-4 mr-2" />
-                      Regenerate
-                    </Button>
-                  </div>
-                </div>
+                <Progress value={generationProgress} className="w-full" />
               </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
+            </div>
+          )}
+          {generationComplete && (
+            <div className="space-y-4">
+              <Alert>
+                <CheckCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Code generation completed successfully!{" "}
+                  {generatedResponse?.full?.files?.length || 0} files generated.
+                </AlertDescription>
+              </Alert>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+                {generatedResponse?.full?.files?.map((component) => (
+                  <Card
+                    key={component.id}
+                    className="group hover:shadow-md transition-shadow"
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <CardTitle className="text-lg">
+                          {component.fileName}
+                        </CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="relative">
+                        <Button
+                          size="sm"
+                          className="absolute top-2 right-2 z-10"
+                          onClick={() =>
+                            copyToClipboard(component.code, component.id)
+                          }
+                        >
+                          {copiedIds.has(component.id) ? (
+                            <Check className="h-4 w-4" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </Button>
+                        <pre className="bg-muted rounded-md p-4 text-sm overflow-auto h-[300px]">
+                          <code className="language-typescript">
+                            {component.code}
+                          </code>
+                        </pre>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

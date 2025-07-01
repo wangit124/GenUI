@@ -49,7 +49,6 @@ export default function ConfigSection() {
 
   return (
     <div className="space-y-6">
-      {/* Base Framework */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -101,7 +100,6 @@ export default function ConfigSection() {
           </div>
         </CardContent>
       </Card>
-      {/* Code Styling & Refactoring */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -148,8 +146,6 @@ export default function ConfigSection() {
           </div>
         </CardContent>
       </Card>
-
-      {/* Library Selection */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -200,7 +196,6 @@ export default function ConfigSection() {
 
           <Separator />
 
-          {/* State Management */}
           <div className="space-y-4">
             <div>
               <Label className="text-base font-medium">State Management</Label>
@@ -245,7 +240,6 @@ export default function ConfigSection() {
 
           <Separator />
 
-          {/* Form Libraries */}
           <div className="space-y-4">
             <div>
               <Label className="text-base font-medium">Form Libraries</Label>

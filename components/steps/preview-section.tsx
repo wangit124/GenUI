@@ -94,7 +94,6 @@ export default function PreviewSection() {
         </CardContent>
       </Card>
 
-      {/* Preview Content */}
       <div className={getViewportClass()}>
         <Card>
           <CardHeader>

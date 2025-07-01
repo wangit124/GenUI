@@ -251,7 +251,6 @@ export default function DirectoryViewer() {
         </Card>
       ) : (
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Directory Tree */}
           <Card className="lg:col-span-1">
             <CardHeader>
               <CardTitle className="text-base">Project Structure</CardTitle>
@@ -266,7 +265,6 @@ export default function DirectoryViewer() {
             </CardContent>
           </Card>
 
-          {/* File Content & Documentation */}
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="text-base">
