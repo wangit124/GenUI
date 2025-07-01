@@ -80,7 +80,7 @@ export default function ThemeSelector() {
 
   const currentColorTheme = colorThemes.find((t) => t.name === colorTheme);
   const currentDarkModeOption = darkModeOptions.find(
-    (option) => option.value === theme
+    (option) => option.value === theme,
   );
 
   return (

@@ -39,7 +39,7 @@ export default function DirectoryViewer() {
   const generatedCode = generatedResponse?.full;
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
-    new Set(["app/", "components/"])
+    new Set(["app/", "components/"]),
   );
 
   const toggleFolder = (folderPath: string) => {
@@ -89,7 +89,7 @@ export default function DirectoryViewer() {
       console.log(`File not found for path: ${filePath}`);
       console.log(
         "Available files:",
-        generatedCode?.files?.map((f) => f.fileName)
+        generatedCode?.files?.map((f) => f.fileName),
       );
     }
 
@@ -164,7 +164,7 @@ export default function DirectoryViewer() {
             }
           });
         }
-      }
+      },
     );
 
     return structure;
@@ -174,7 +174,7 @@ export default function DirectoryViewer() {
 
   const renderDirectoryTree = (
     structure: Record<string, DirectoryItem>,
-    basePath = ""
+    basePath = "",
   ): React.ReactNode[] => {
     return Object.entries(structure).map(
       ([name, item]: [string, DirectoryItem]) => {
@@ -227,7 +227,7 @@ export default function DirectoryViewer() {
             </Button>
           );
         }
-      }
+      },
     );
   };
 

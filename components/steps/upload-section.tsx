@@ -27,7 +27,7 @@ export default function UploadSection() {
     (acceptedFiles: File[]) => {
       setUploadedFiles([...uploadedFiles, ...acceptedFiles]);
     },
-    [uploadedFiles, setUploadedFiles]
+    [uploadedFiles, setUploadedFiles],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -64,7 +64,7 @@ export default function UploadSection() {
             variant: "destructive",
           });
         },
-      }
+      },
     );
   };
 

@@ -35,7 +35,7 @@ export default function ConfigSection() {
 
   const toggleLibrary = (
     category: Exclude<keyof Configuration["libraries"], "ui">,
-    library: string
+    library: string,
   ) => {
     const currentLibraries = configuration.libraries[category];
     const newLibraries = currentLibraries.includes(library)

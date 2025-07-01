@@ -58,7 +58,7 @@ export default function ThemeProvider({
         "theme-green",
         "theme-purple",
         "theme-orange",
-        "theme-red"
+        "theme-red",
       );
 
       // Add current color theme class

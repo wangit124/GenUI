@@ -29,7 +29,7 @@ export default function StepWrapper() {
 
   const currentStepIndex = useMemo(
     () => steps.findIndex((s) => s.id === currentStep),
-    [currentStep]
+    [currentStep],
   );
 
   const { uploadedFiles, figmaImages, generatedResponse } =
@@ -41,7 +41,7 @@ export default function StepWrapper() {
         addCompletedStep(step);
       }
     },
-    [addCompletedStep, completedSteps]
+    [addCompletedStep, completedSteps],
   );
 
   const exportFiles = async () => {
@@ -173,7 +173,7 @@ export default function StepWrapper() {
                       "h-2 w-8 rounded-full transition-colors",
                       index <= currentStepIndex
                         ? "bg-primary"
-                        : "bg-muted dark:bg-muted/50"
+                        : "bg-muted dark:bg-muted/50",
                     )}
                   />
                 ))}

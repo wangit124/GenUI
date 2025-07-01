@@ -17,7 +17,7 @@ export default function PreviewSection() {
   const { generatedResponse, figmaImages } = useGlobalFormStore();
 
   const [viewMode, setViewMode] = useState<"desktop" | "tablet" | "mobile">(
-    "desktop"
+    "desktop",
   );
 
   const getViewportClass = () => {

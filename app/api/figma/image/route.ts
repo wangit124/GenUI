@@ -21,7 +21,7 @@ export async function POST(request: Request) {
             "X-Figma-Token": process.env.FIGMA_TOKEN,
           }
         : undefined,
-    }
+    },
   );
   const figmaData = await figmaResponse.json();
 
@@ -34,6 +34,6 @@ export async function POST(request: Request) {
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
-    }
+    },
   );
 }

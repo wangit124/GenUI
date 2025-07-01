@@ -31,7 +31,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -53,7 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {loading ? <Loader className="h-4 w-4 animate-spin" /> : props.children}
       </Comp>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 
