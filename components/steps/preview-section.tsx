@@ -33,7 +33,7 @@ export default function PreviewSection() {
 
   const fullAppPreview = (
     <div className="grid gap-2">
-      {figmaImages.slice(0).map((image, index) => (
+      {figmaImages.slice(0, 1).map((image, index) => (
         <Card key={index}>
           <CardContent className="flex justify-center p-3">
             <div className="flex items-center justify-center gap-3">
@@ -103,7 +103,7 @@ export default function PreviewSection() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {generatedResponse?.full ? (
+            {generatedResponse?.files?.length ? (
               <div className="border rounded-lg overflow-hidden">
                 {fullAppPreview}
               </div>

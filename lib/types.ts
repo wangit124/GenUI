@@ -55,9 +55,5 @@ export interface GeneratedFile {
 }
 
 export interface GeneratedResponse {
-  full?: {
-    files: GeneratedFile[];
-    structure: Record<string, string[]>;
-  };
-  sharedComponents?: GeneratedFile[];
+  files?: GeneratedFile[];
 }

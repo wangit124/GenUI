@@ -1,14 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import { Upload, X, Link } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { X, Link } from "lucide-react";
 import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import { useConvertFigmaFile } from "@/hooks/useConvertFigmaFile";
 import { useToast } from "@/hooks/useToast";
@@ -16,28 +14,9 @@ import { useToast } from "@/hooks/useToast";
 export default function UploadSection() {
   const { uploadedFiles, setUploadedFiles, figmaImages, setFigmaImages } =
     useGlobalFormStore();
-
   const [figmaUrl, setFigmaUrl] = useState("");
-
   const { mutate: convertFigmaFile, isPending } = useConvertFigmaFile();
-
   const { toast: showToast } = useToast();
-
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      setUploadedFiles([...uploadedFiles, ...acceptedFiles]);
-    },
-    [uploadedFiles, setUploadedFiles],
-  );
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".svg"],
-      "application/pdf": [".pdf"],
-    },
-    multiple: true,
-  });
 
   const removeFile = (index: number) => {
     const newFiles = uploadedFiles.filter((_, i) => i !== index);
@@ -74,41 +53,6 @@ export default function UploadSection() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <div>
-          <Label className="text-base font-medium">Upload Design Files</Label>
-          <p className="text-sm text-muted-foreground">
-            Support for PNG, JPG, SVG, and PDF files
-          </p>
-        </div>
-
-        <div
-          {...getRootProps()}
-          data-upload-area
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            isDragActive
-              ? "border-primary bg-primary/5 dark:bg-primary/10"
-              : "border-muted-foreground/25 hover:border-muted-foreground/50 dark:border-muted-foreground/40 dark:hover:border-muted-foreground/60"
-          }`}
-        >
-          <input {...getInputProps()} />
-          <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          {isDragActive ? (
-            <p className="text-lg">Drop the files here...</p>
-          ) : (
-            <div>
-              <p className="text-lg mb-2">Drag & drop design files here</p>
-              <p className="text-sm text-muted-foreground mb-4">
-                or click to browse
-              </p>
-              <Button>Browse Files</Button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <Separator />
-
       <div className="space-y-4">
         <div>
           <Label className="text-base font-medium">Figma Links</Label>

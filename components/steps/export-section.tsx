@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Card,
   CardContent,
@@ -35,12 +35,30 @@ interface DirectoryItem {
 }
 
 export default function DirectoryViewer() {
-  const { generatedResponse } = useGlobalFormStore();
-  const generatedCode = generatedResponse?.full;
+  const { generatedResponse: generatedCode } = useGlobalFormStore();
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
-    new Set(["app/", "components/"]),
+    new Set(["app", "components"]),
   );
+
+  const fileStructure = useMemo(() => {
+    return generatedCode?.files?.reduce(
+      (prev, curr) => {
+        const splitIndex = curr.fileName.lastIndexOf("/");
+        const parent =
+          splitIndex === -1 ? "root" : curr.fileName.substring(0, splitIndex);
+        const child =
+          splitIndex === -1
+            ? curr.fileName
+            : curr.fileName.substring(splitIndex + 1, curr.fileName.length);
+        prev[parent] = !prev[parent]
+          ? [child]
+          : Array.from(new Set([...prev[parent], child]));
+        return prev;
+      },
+      {} as Record<string, string[]>,
+    );
+  }, [generatedCode]);
 
   const toggleFolder = (folderPath: string) => {
     const newExpanded = new Set(expandedFolders);
@@ -67,22 +85,9 @@ export default function DirectoryViewer() {
 
   const getFileContent = (filePath: string): string => {
     // Find the file content from the generated files
-    const file = generatedCode?.files?.find((f: GeneratedFile) => {
-      // Direct match
-      if (f.fileName === filePath) return true;
-
-      // Extract just the filename from the path
-      const fileNameOnly = filePath.split("/").pop();
-      const generatedFileNameOnly = f.fileName.split("/").pop();
-
-      // Match by filename only
-      if (fileNameOnly === generatedFileNameOnly) return true;
-
-      // Match if the generated file path ends with our constructed path
-      if (f.fileName.endsWith(filePath)) return true;
-
-      return false;
-    });
+    const file = generatedCode?.files?.filter(
+      (f) => f.fileName === filePath,
+    )?.[0];
 
     // Debug logging
     if (!file) {
@@ -98,12 +103,12 @@ export default function DirectoryViewer() {
 
   // Convert the flat structure from generatedResponse into a nested tree structure
   const buildDirectoryStructure = (): Record<string, DirectoryItem> => {
-    if (!generatedCode?.structure) return {};
+    if (!fileStructure) return {};
 
     const structure: Record<string, DirectoryItem> = {};
 
     // Convert flat structure to nested structure
-    Object.entries(generatedCode.structure).forEach(
+    Object.entries(fileStructure).forEach(
       ([folderPath, files]: [string, string[]]) => {
         const pathParts = folderPath.split("/").filter(Boolean);
 
@@ -124,7 +129,7 @@ export default function DirectoryViewer() {
           // Navigate/create the path
           pathParts.forEach((part, index) => {
             const isLast = index === pathParts.length - 1;
-            const folderName = part.endsWith("/") ? part : part + "/";
+            const folderName = part;
 
             if (!current[folderName]) {
               current[folderName] = {
@@ -231,11 +236,10 @@ export default function DirectoryViewer() {
     );
   };
 
-  const getSelectedFileContent = (): string | null => {
+  const selectedCode = useMemo(() => {
     if (!selectedFile) return null;
-
     return getFileContent(selectedFile);
-  };
+  }, [selectedFile]);
 
   return (
     <div className="space-y-6">
@@ -287,8 +291,7 @@ export default function DirectoryViewer() {
                   </div>
                   <pre className="p-4 text-sm overflow-x-auto max-h-96">
                     <code>
-                      {getSelectedFileContent() ||
-                        "// File content not available"}
+                      {selectedCode || "// File content not available"}
                     </code>
                   </pre>
                 </div>
