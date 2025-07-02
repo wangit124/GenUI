@@ -1,9 +1,8 @@
 import { APP_URL } from "./constants";
 
-export const FIGMA_TOKEN_ENDPOINT = "https://api.figma.com/v1/oauth/token";
-
+export const FIGMA_API_ENDPOINT = "https://api.figma.com/v1";
+export const FIGMA_TOKEN_ENDPOINT = `${FIGMA_API_ENDPOINT}/oauth/token`;
 export const FIGMA_OAUTH_CALLBACK_URL = `${APP_URL}/figma/oauth/callback`;
-
 export const DEFAULT_TOKEN_EXPIRES_IN = 86400;
 
 export const getFigmaOAuthUrl = ({

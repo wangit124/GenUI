@@ -25,12 +25,12 @@ export default function FigmaOauthCallback() {
               setAuthData(data);
               showToast({
                 title: "Success",
-                description: "Figma account linked successfully!",
+                description: "Figma account linked successfully.",
               });
             } else {
               showToast({
                 title: "Error",
-                description: "Token expired",
+                description: "Token expired.",
                 variant: "destructive",
               });
             }
@@ -40,7 +40,7 @@ export default function FigmaOauthCallback() {
             console.error(err);
             showToast({
               title: "Error",
-              description: "Failed to link Figma account",
+              description: "Failed to link Figma account.",
               variant: "destructive",
             });
             router.push("/");

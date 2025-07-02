@@ -1,9 +1,8 @@
-import { Configuration } from "@/lib/types";
+import { Configuration, GeneratedFile } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "./useAuthStore";
 
 export type UseGenerateCodeMutationInput = {
-  uploadedFilesBase64: string[];
   figmaImages: string[];
   configuration: Configuration;
 };
@@ -11,7 +10,9 @@ export type UseGenerateCodeMutationInput = {
 export const useGenerateCode = () => {
   return useMutation({
     mutationKey: ["generate-code"],
-    mutationFn: async (payload: UseGenerateCodeMutationInput) => {
+    mutationFn: async (
+      payload: UseGenerateCodeMutationInput
+    ): Promise<{ files?: GeneratedFile[]; tokensUsed?: number }> => {
       const headerData = useAuthStore.getState().authData;
       const response = await fetch("/api/generate/code", {
         method: "POST",

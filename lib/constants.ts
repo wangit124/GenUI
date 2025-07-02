@@ -23,14 +23,8 @@ export const steps: StepNavItem[] = [
     component: "generate",
   },
   {
-    id: StepType.PREVIEW,
-    title: "Preview",
-    description: "Review results",
-    component: "preview",
-  },
-  {
     id: StepType.EXPORT,
-    title: "Export",
+    title: "Preview & Export",
     description: "Download & deploy",
     component: "export",
   },
@@ -277,4 +271,4 @@ export const mockGeneratedCodeResponse = [
   },
 ];
 
-export const MAX_FILE_COUNT = 4;
+export const MAX_FILE_COUNT = 2;

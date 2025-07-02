@@ -16,7 +16,6 @@ import {
 import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import Image from "next/image";
 import { useGenerateCode } from "@/hooks/useGenerateCode";
-import { toBase64 } from "@/lib/utils";
 import { useToast } from "@/hooks/useToast";
 import { mockGeneratedCodeResponse } from "@/lib/constants";
 
@@ -24,14 +23,16 @@ export default function GenerateSection() {
   const { toast: showToast } = useToast();
   const {
     configuration,
-    uploadedFiles,
     figmaImages,
     generatedResponse,
     setGeneratedResponse,
+    setTokensUsed,
+    tokensUsed,
   } = useGlobalFormStore();
 
   const { mutateAsync: generateCode, isPending: isGenerating } =
     useGenerateCode();
+
   const [copiedIds, setCopiedIds] = useState<Set<string>>(new Set());
 
   const copyToClipboard = async (text: string, id: string) => {
@@ -52,20 +53,24 @@ export default function GenerateSection() {
 
   const generateFullApp = async () => {
     try {
-      setGeneratedResponse({ files: mockGeneratedCodeResponse });
-      const base64Files = await Promise.all(uploadedFiles.map(toBase64));
-      const generatedCode = await generateCode({
+      const response = await generateCode({
         configuration,
-        uploadedFilesBase64: base64Files,
         figmaImages,
       });
-      setGeneratedResponse({ files: mockGeneratedCodeResponse });
+      setGeneratedResponse({
+        files: response?.files || mockGeneratedCodeResponse,
+      });
+      setTokensUsed(response?.tokensUsed || 0);
+      showToast({
+        title: "Success",
+        description: "Your app was successfully generated. Try it out now!",
+      });
     } catch (error) {
       console.error(error);
       showToast({
         title: "Error",
         description:
-          "Failed to generate code, please try again. Perhaps tokens ran out",
+          "Failed to generate code, please try again. Perhaps tokens ran out.",
         variant: "destructive",
       });
     }
@@ -83,27 +88,6 @@ export default function GenerateSection() {
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="grid gap-2">
-              {uploadedFiles.map((file, index) => (
-                <Card key={index}>
-                  <CardContent className="flex justify-between p-3">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src={URL.createObjectURL(file)}
-                        alt={file.name}
-                        width={0}
-                        height={0}
-                        style={{ width: 150, height: "auto" }}
-                      />
-                      <div>
-                        <p className="text-sm font-medium">{file.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {(file.size / 1024 / 1024).toFixed(2)} MB
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
               {figmaImages.map((image, index) => (
                 <Card key={index}>
                   <CardContent className="flex justify-between p-3">
@@ -141,6 +125,7 @@ export default function GenerateSection() {
                 <AlertDescription>
                   Code generation completed successfully!{" "}
                   {generatedResponse?.files?.length || 0} files generated.
+                  Tokens used: {tokensUsed}
                 </AlertDescription>
               </Alert>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
@@ -183,33 +168,37 @@ export default function GenerateSection() {
               </div>
             </div>
           )}
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">
-                {!generatedResponse?.files?.length
-                  ? "Ready to Generate"
-                  : "Regenerate"}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                This will create a complete application with your components
-              </p>
+          {!generatedResponse?.files?.length && (
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">
+                  {!generatedResponse?.files?.length
+                    ? "Ready to Generate"
+                    : "Regenerate"}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  This will create a complete application with your components
+                </p>
+              </div>
+              <Button
+                onClick={generateFullApp}
+                loading={isGenerating}
+                disabled={isGenerating}
+                size="lg"
+              >
+                {!generatedResponse?.files?.length ? (
+                  <Play className="h-4 w-4 mr-2" />
+                ) : (
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                )}
+                {isGenerating
+                  ? "This may take some time..."
+                  : !generatedResponse?.files?.length
+                    ? "Generate App"
+                    : "Regenerate"}
+              </Button>
             </div>
-            <Button
-              onClick={generateFullApp}
-              loading={isGenerating}
-              disabled={isGenerating}
-              size="lg"
-            >
-              {!generatedResponse?.files?.length ? (
-                <Play className="h-4 w-4 mr-2" />
-              ) : (
-                <RefreshCw className="h-4 w-4 mr-2" />
-              )}
-              {!generatedResponse?.files?.length
-                ? "Generate App"
-                : "Regenerate"}
-            </Button>
-          </div>
+          )}
         </CardContent>
       </Card>
     </div>

@@ -36,7 +36,7 @@ export function useColorTheme() {
 
 export default function ThemeProvider({
   children,
-  defaultColorTheme = "blue",
+  defaultColorTheme = Color.PURPLE,
   storageKey = "instaui-color-theme",
   ...props
 }: ThemeProviderProps) {
@@ -53,12 +53,7 @@ export default function ThemeProvider({
 
       // Remove all color theme classes
       root?.classList.remove(
-        "theme-black",
-        "theme-blue",
-        "theme-green",
-        "theme-purple",
-        "theme-orange",
-        "theme-red",
+        ...Object.values(Color).map((color) => `theme-${color}`)
       );
 
       // Add current color theme class

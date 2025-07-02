@@ -9,7 +9,6 @@ export enum StepType {
   UPLOAD = "upload",
   CONFIG = "config",
   GENERATE = "generate",
-  PREVIEW = "preview",
   EXPORT = "export",
 }
 

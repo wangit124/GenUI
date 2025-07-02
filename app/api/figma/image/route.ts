@@ -1,3 +1,5 @@
+import { FIGMA_API_ENDPOINT } from "@/lib/figma";
+
 export async function POST(request: Request) {
   const userId = request?.headers?.get("x-user-id");
   const figmaAccessToken = request?.headers?.get("x-figma-access-token");
@@ -21,12 +23,10 @@ export async function POST(request: Request) {
   const [, , file_key] = matches;
 
   const figmaResponse = await fetch(
-    `https://api.figma.com/v1/images/${file_key}?ids=${nodeIds}`,
+    `${FIGMA_API_ENDPOINT}/images/${file_key}?ids=${nodeIds}`,
     {
       headers: figmaAccessToken
-        ? {
-            Authorization: `Bearer ${figmaAccessToken}`,
-          }
+        ? { Authorization: `Bearer ${figmaAccessToken}` }
         : undefined,
     }
   );

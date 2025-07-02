@@ -15,15 +15,17 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import UploadSection from "@/components/steps/upload-section";
 import ConfigSection from "@/components/steps/config-section";
 import GenerateSection from "@/components/steps/generate-section";
-import PreviewSection from "@/components/steps/preview-section";
 import ExportSection from "@/components/steps/export-section";
 import { StepType } from "@/lib/types";
 import { steps } from "@/lib/constants";
 import { useStepsStore } from "@/hooks/useStepsStore";
 import { cn } from "@/lib/utils";
 import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
+import { useToast } from "@/hooks/useToast";
 
 export default function StepWrapper() {
+  const { toast: showToast } = useToast();
+
   const { currentStep, setCurrentStep, completedSteps, addCompletedStep } =
     useStepsStore();
 
@@ -32,7 +34,7 @@ export default function StepWrapper() {
     [currentStep]
   );
 
-  const { uploadedFiles, figmaImages, generatedResponse } =
+  const { configuration, figmaImages, generatedResponse } =
     useGlobalFormStore();
 
   const handleStepComplete = useCallback(
@@ -76,15 +78,24 @@ export default function StepWrapper() {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+      showToast({
+        title: "Success",
+        description: "Successfully exported files.",
+      });
     } catch (error) {
       console.error("Error creating zip file:", error);
-      alert("Error creating zip file. Please try again.");
+      showToast({
+        title: "Error",
+        description: "Error creating zip file. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
   const handleNextStep = () => {
     if (currentStepIndex === steps.length - 1) {
       exportFiles();
+      handleStepComplete(currentStep);
       return;
     }
     if (currentStepIndex < steps.length - 1) {
@@ -102,13 +113,15 @@ export default function StepWrapper() {
   const canProceedToNext = () => {
     switch (currentStep) {
       case StepType.UPLOAD:
-        return uploadedFiles.length > 0 || figmaImages.length > 0;
+        return Boolean(figmaImages.length > 0);
       case StepType.CONFIG:
-        return true;
+        return Boolean(
+          configuration?.baseFramework &&
+            configuration?.libraries?.ui &&
+            configuration?.styling?.componentSplitting
+        );
       case StepType.GENERATE:
-        return true;
-      case StepType.PREVIEW:
-        return true;
+        return Boolean(generatedResponse?.files?.length);
       default:
         return true;
     }
@@ -122,8 +135,6 @@ export default function StepWrapper() {
         return <ConfigSection />;
       case StepType.GENERATE:
         return <GenerateSection />;
-      case StepType.PREVIEW:
-        return <PreviewSection />;
       case StepType.EXPORT:
         return <ExportSection />;
       default:

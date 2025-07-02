@@ -11,6 +11,8 @@ type GlobalFormStoreType = {
   setConfiguration: (configuration: Configuration) => void;
   generatedResponse: GeneratedResponse | null;
   setGeneratedResponse: (response: GeneratedResponse) => void;
+  tokensUsed: number;
+  setTokensUsed: (tokens: number) => void;
 };
 
 export const useGlobalFormStore = create<GlobalFormStoreType>()(
@@ -36,6 +38,8 @@ export const useGlobalFormStore = create<GlobalFormStoreType>()(
       setConfiguration: (configuration) => set({ configuration }),
       generatedResponse: null,
       setGeneratedResponse: (response) => set({ generatedResponse: response }),
+      tokensUsed: 0,
+      setTokensUsed: (tokens) => set({ tokensUsed: tokens }),
     }),
     { name: "global-form-store" }
   )

@@ -26,7 +26,7 @@ export default function UploadSection() {
     if (figmaImages.length >= MAX_FILE_COUNT) {
       showToast({
         title: "Max file limit reached",
-        description: `You can upload a maximum of ${MAX_FILE_COUNT} figma files`,
+        description: `You can upload a maximum of ${MAX_FILE_COUNT} figma files.`,
         variant: "destructive",
       });
       return;
@@ -39,7 +39,7 @@ export default function UploadSection() {
           setFigmaUrl("");
           showToast({
             title: "Success",
-            description: "Figma file converted to image",
+            description: "Figma file converted to image.",
             variant: "default",
           });
         },
