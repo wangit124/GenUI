@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       headers: figmaAccessToken
         ? { Authorization: `Bearer ${figmaAccessToken}` }
         : undefined,
-    }
+    },
   );
   const figmaData = await figmaResponse.json();
 
@@ -41,6 +41,6 @@ export async function POST(request: Request) {
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
-    }
+    },
   );
 }

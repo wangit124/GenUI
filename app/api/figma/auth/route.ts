@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   }
 
   const base64EncodedClientIdAndSecret = Buffer.from(
-    `${process.env.FIGMA_CLIENT_ID}:${process.env.FIGMA_CLIENT_SECRET}`
+    `${process.env.FIGMA_CLIENT_ID}:${process.env.FIGMA_CLIENT_SECRET}`,
   ).toString("base64");
 
   const response = await fetch(FIGMA_TOKEN_ENDPOINT, {
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
 
   const expireDate = addSeconds(
     new Date(),
-    Math.min(DEFAULT_TOKEN_EXPIRES_IN, expiresIn)
+    Math.min(DEFAULT_TOKEN_EXPIRES_IN, expiresIn),
   );
 
   return new Response(JSON.stringify({ userId, accessToken, expireDate }), {

@@ -13,34 +13,47 @@ type GlobalFormStoreType = {
   setGeneratedResponse: (response: GeneratedResponse) => void;
   tokensUsed: number;
   setTokensUsed: (tokens: number) => void;
+  resetStore: () => void;
+};
+
+const initialState: Pick<
+  GlobalFormStoreType,
+  | "uploadedFiles"
+  | "figmaImages"
+  | "configuration"
+  | "generatedResponse"
+  | "tokensUsed"
+> = {
+  uploadedFiles: [],
+  figmaImages: [],
+  configuration: {
+    baseFramework: "nextjs",
+    enableTailwind: true,
+    libraries: {
+      ui: "shadcn",
+      state: ["zustand"],
+      forms: ["react-hook-form"],
+    },
+    styling: {
+      componentSplitting: "moderate",
+    },
+  },
+  generatedResponse: null,
+  tokensUsed: 0,
 };
 
 export const useGlobalFormStore = create<GlobalFormStoreType>()(
   persist(
     (set) => ({
-      uploadedFiles: [],
+      ...initialState,
       setUploadedFiles: (files) => set({ uploadedFiles: files }),
-      figmaImages: [],
       setFigmaImages: (images) =>
         set({ figmaImages: Array.from(new Set(images)) }),
-      configuration: {
-        baseFramework: "nextjs",
-        enableTailwind: true,
-        libraries: {
-          ui: "shadcn",
-          state: ["zustand"],
-          forms: ["react-hook-form"],
-        },
-        styling: {
-          componentSplitting: "moderate",
-        },
-      },
       setConfiguration: (configuration) => set({ configuration }),
-      generatedResponse: null,
       setGeneratedResponse: (response) => set({ generatedResponse: response }),
-      tokensUsed: 0,
       setTokensUsed: (tokens) => set({ tokensUsed: tokens }),
+      resetStore: () => set({ ...initialState }),
     }),
-    { name: "global-form-store" }
-  )
+    { name: "global-form-store" },
+  ),
 );

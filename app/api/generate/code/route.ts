@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         type: "url",
         url: imageUrl,
       },
-    })
+    }),
   );
 
   const response = await anthropic.messages.create({

@@ -53,7 +53,7 @@ export default function ThemeProvider({
 
       // Remove all color theme classes
       root?.classList.remove(
-        ...Object.values(Color).map((color) => `theme-${color}`)
+        ...Object.values(Color).map((color) => `theme-${color}`),
       );
 
       // Add current color theme class

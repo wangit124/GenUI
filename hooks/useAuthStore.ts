@@ -18,6 +18,6 @@ export const useAuthStore = create<AuthStoreType>()(
       authData: undefined,
       setAuthData: (authData) => set({ authData }),
     }),
-    { name: "auth-store" }
-  )
+    { name: "auth-store" },
+  ),
 );

@@ -7,6 +7,7 @@ type StepsStoreType = {
   setCurrentStep: (step: StepType) => void;
   completedSteps: Array<StepType> | null;
   addCompletedStep: (step: StepType) => void;
+  resetStore: () => void;
 };
 
 export const useStepsStore = create<StepsStoreType>()(
@@ -18,10 +19,12 @@ export const useStepsStore = create<StepsStoreType>()(
       addCompletedStep: (step) =>
         set((state) => ({
           completedSteps: Array.from(
-            new Set([...(state.completedSteps || []), step])
+            new Set([...(state.completedSteps || []), step]),
           ),
         })),
+      resetStore: () =>
+        set({ currentStep: StepType.UPLOAD, completedSteps: null }),
     }),
-    { name: "steps-store" }
-  )
+    { name: "steps-store" },
+  ),
 );

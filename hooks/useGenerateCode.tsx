@@ -11,7 +11,7 @@ export const useGenerateCode = () => {
   return useMutation({
     mutationKey: ["generate-code"],
     mutationFn: async (
-      payload: UseGenerateCodeMutationInput
+      payload: UseGenerateCodeMutationInput,
     ): Promise<{ files?: GeneratedFile[]; tokensUsed?: number }> => {
       const headerData = useAuthStore.getState().authData;
       const response = await fetch("/api/generate/code", {

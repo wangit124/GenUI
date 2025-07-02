@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Download, RotateCw } from "lucide-react";
 import UploadSection from "@/components/steps/upload-section";
 import ConfigSection from "@/components/steps/config-section";
 import GenerateSection from "@/components/steps/generate-section";
@@ -26,16 +26,26 @@ import { useToast } from "@/hooks/useToast";
 export default function StepWrapper() {
   const { toast: showToast } = useToast();
 
-  const { currentStep, setCurrentStep, completedSteps, addCompletedStep } =
-    useStepsStore();
+  const {
+    currentStep,
+    setCurrentStep,
+    completedSteps,
+    addCompletedStep,
+    resetStore: resetStepsStore,
+  } = useStepsStore();
 
   const currentStepIndex = useMemo(
     () => steps.findIndex((s) => s.id === currentStep),
-    [currentStep]
+    [currentStep],
   );
 
-  const { configuration, figmaImages, generatedResponse } =
+  const { configuration, resetStore, figmaImages, generatedResponse } =
     useGlobalFormStore();
+
+  const clearAll = () => {
+    resetStore();
+    resetStepsStore();
+  };
 
   const handleStepComplete = useCallback(
     (step: StepType) => {
@@ -43,7 +53,7 @@ export default function StepWrapper() {
         addCompletedStep(step);
       }
     },
-    [addCompletedStep, completedSteps]
+    [addCompletedStep, completedSteps],
   );
 
   const exportFiles = async () => {
@@ -118,7 +128,7 @@ export default function StepWrapper() {
         return Boolean(
           configuration?.baseFramework &&
             configuration?.libraries?.ui &&
-            configuration?.styling?.componentSplitting
+            configuration?.styling?.componentSplitting,
         );
       case StepType.GENERATE:
         return Boolean(generatedResponse?.files?.length);
@@ -184,19 +194,29 @@ export default function StepWrapper() {
                       "h-2 w-8 rounded-full transition-colors",
                       index <= currentStepIndex
                         ? "bg-primary"
-                        : "bg-muted dark:bg-muted/50"
+                        : "bg-muted dark:bg-muted/50",
                     )}
                   />
                 ))}
               </div>
             </div>
 
-            <Button onClick={handleNextStep} disabled={!canProceedToNext()}>
-              {currentStepIndex === steps.length - 1 ? "Export" : "Next"}
-              {currentStepIndex !== steps.length - 1 && (
-                <ArrowRight className="h-4 w-4 ml-2" />
+            <div className="flex items-center gap-2">
+              <Button onClick={handleNextStep} disabled={!canProceedToNext()}>
+                {currentStepIndex === steps.length - 1 ? "Export" : "Next"}
+                {currentStepIndex === steps.length - 1 ? (
+                  <Download className="h-4 w-4 ml-2" />
+                ) : (
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                )}
+              </Button>
+              {completedSteps?.includes(StepType.EXPORT) && (
+                <Button onClick={clearAll}>
+                  <RotateCw className="h-4 w-4 ml-2" />
+                  Restart (Clear All)
+                </Button>
               )}
-            </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
