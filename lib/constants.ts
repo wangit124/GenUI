@@ -1,5 +1,8 @@
 import { Configuration, StepNavItem, StepType } from "./types";
 
+export const APP_URL =
+  process.env.NODE_ENV === "development" ? `http://localhost:3000` : "";
+
 export const steps: StepNavItem[] = [
   {
     id: StepType.UPLOAD,
