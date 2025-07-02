@@ -10,8 +10,7 @@ import { redirect } from "next/navigation";
 
 export async function GET() {
   const redirectUrl = encodeURIComponent(FIGMA_OAUTH_CALLBACK_URL);
-  const scope =
-    "file_content:read,file_dev_resources:read,file_metadata:read,file_versions:read,projects:read";
+  const scope = "file_content:read,file_metadata:read,file_versions:read";
   const state = encodeURIComponent(randomUUID());
   redirect(getFigmaOAuthUrl({ redirectUrl, scope, state }));
 }

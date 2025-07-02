@@ -29,7 +29,7 @@ export default function StepWrapper() {
 
   const currentStepIndex = useMemo(
     () => steps.findIndex((s) => s.id === currentStep),
-    [currentStep],
+    [currentStep]
   );
 
   const { uploadedFiles, figmaImages, generatedResponse } =
@@ -41,11 +41,11 @@ export default function StepWrapper() {
         addCompletedStep(step);
       }
     },
-    [addCompletedStep, completedSteps],
+    [addCompletedStep, completedSteps]
   );
 
   const exportFiles = async () => {
-    const files = generatedResponse?.full?.files;
+    const files = generatedResponse?.files;
 
     if (!files || files.length === 0) {
       alert("No files to export. Please generate your application first.");
@@ -136,7 +136,7 @@ export default function StepWrapper() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div>
+            <div className="space-y-2">
               <CardTitle className="flex items-center gap-2">
                 {steps[currentStepIndex].title}
                 <Badge variant="outline">
@@ -173,7 +173,7 @@ export default function StepWrapper() {
                       "h-2 w-8 rounded-full transition-colors",
                       index <= currentStepIndex
                         ? "bg-primary"
-                        : "bg-muted dark:bg-muted/50",
+                        : "bg-muted dark:bg-muted/50"
                     )}
                   />
                 ))}

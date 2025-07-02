@@ -1,4 +1,11 @@
 export async function POST(request: Request) {
+  const userId = request?.headers?.get("x-user-id");
+  const figmaAccessToken = request?.headers?.get("x-figma-access-token");
+
+  if (!userId || !figmaAccessToken) {
+    throw new Error("Unauthorized");
+  }
+
   const body = await request.json();
   const { figmaUrl } = body;
 
@@ -16,12 +23,12 @@ export async function POST(request: Request) {
   const figmaResponse = await fetch(
     `https://api.figma.com/v1/images/${file_key}?ids=${nodeIds}`,
     {
-      headers: process.env.FIGMA_TOKEN
+      headers: figmaAccessToken
         ? {
-            "X-Figma-Token": process.env.FIGMA_TOKEN,
+            Authorization: `Bearer ${figmaAccessToken}`,
           }
         : undefined,
-    },
+    }
   );
   const figmaData = await figmaResponse.json();
 
@@ -34,6 +41,6 @@ export async function POST(request: Request) {
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
-    },
+    }
   );
 }

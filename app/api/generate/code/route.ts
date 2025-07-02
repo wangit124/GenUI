@@ -8,6 +8,13 @@ import { getGenerateCodeLLMPrompt } from "@/lib/prompts";
 import { ContentBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
 
 export async function POST(request: Request) {
+  const userId = request?.headers?.get("x-user-id");
+  const figmaAccessToken = request?.headers?.get("x-figma-access-token");
+
+  if (!userId || !figmaAccessToken) {
+    throw new Error("Unauthorized");
+  }
+
   const body: UseGenerateCodeMutationInput = await request.json();
   const { configuration, uploadedFilesBase64, figmaImages } = body;
 
@@ -19,7 +26,7 @@ export async function POST(request: Request) {
         media_type: "image/jpeg",
         data: file,
       },
-    }),
+    })
   );
 
   const figmaImagesToMessage: ContentBlockParam[] = figmaImages.map(
@@ -29,7 +36,7 @@ export async function POST(request: Request) {
         type: "url",
         url: imageUrl,
       },
-    }),
+    })
   );
 
   console.log({ prompt: getGenerateCodeLLMPrompt(configuration) });
