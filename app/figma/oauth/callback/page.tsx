@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useFigmaAuth } from "@/hooks/useFigmaAuth";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import { useToast } from "@/hooks/useToast";
 
@@ -11,11 +11,11 @@ export default function FigmaOauthCallback() {
   const { mutate: figmaAuth } = useFigmaAuth();
   const { setAuthData } = useAuthStore();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const code = searchParams.get("code");
-    const state = searchParams.get("state");
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    const state = url.searchParams.get("state");
     if (code && state) {
       figmaAuth(
         { code, state },
@@ -45,7 +45,7 @@ export default function FigmaOauthCallback() {
             });
             router.push("/");
           },
-        },
+        }
       );
     }
   }, []);

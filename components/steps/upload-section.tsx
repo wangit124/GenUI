@@ -50,7 +50,7 @@ export default function UploadSection() {
             variant: "destructive",
           });
         },
-      },
+      }
     );
   };
 
@@ -102,7 +102,7 @@ export default function UploadSection() {
           Uploaded Files ({figmaImages.length})
         </Label>
         <p className="text-sm text-muted-foreground">
-          Max {MAX_FILE_COUNT} files
+          Maximum {MAX_FILE_COUNT} files
         </p>
         <div className="grid gap-2">
           {figmaImages.map((image, index) => (
