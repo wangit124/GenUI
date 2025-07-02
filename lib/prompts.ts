@@ -24,6 +24,7 @@ export const getGenerateCodeLLMPrompt = (configuration: Configuration) =>
       ? ` The app should be implemented using following form npm libraries: ${configuration.libraries.forms?.join(", ")}.`
       : ""
   }` +
+  ` Include the generated package.json file in the final response if npm libraries are used.` +
   ` ALWAYS extract reusable components that are common between all designs and create reusable component files in a shared /components folder in the root of the app. Import and render these components where needed.` +
   ` If a component file exceeds ${componentSplittingConfig[configuration.styling.componentSplitting]} lines of code, ALWAYS split that component into child components and put those child components in the same folder as parent.` +
   ` ALWAYS return your response in JSON format as an array of files using the following array schema: { id: string; fileName: string; code: string; }[].` +

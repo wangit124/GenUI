@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -18,6 +18,7 @@ import Image from "next/image";
 import { useGenerateCode } from "@/hooks/useGenerateCode";
 import { useToast } from "@/hooks/useToast";
 import { mockGeneratedCodeResponse } from "@/lib/constants";
+import { Progress } from "@/components/ui/progress";
 
 export default function GenerateSection() {
   const { toast: showToast } = useToast();
@@ -34,6 +35,9 @@ export default function GenerateSection() {
     useGenerateCode();
 
   const [copiedIds, setCopiedIds] = useState<Set<string>>(new Set());
+  const [progressValue, setProgressValue] = useState<number>(0);
+
+  const progressInterval = useRef<NodeJS.Timeout | null>(null);
 
   const copyToClipboard = async (text: string, id: string) => {
     try {
@@ -53,6 +57,13 @@ export default function GenerateSection() {
 
   const generateFullApp = async () => {
     try {
+      setProgressValue(10);
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
+      progressInterval.current = setInterval(() => {
+        setProgressValue((prev) => Math.min(90, prev + (100 - prev) / 3));
+      }, 2000);
       const response = await generateCode({
         configuration,
         figmaImages,
@@ -73,6 +84,10 @@ export default function GenerateSection() {
           "Failed to generate code, please try again. Perhaps tokens ran out.",
         variant: "destructive",
       });
+    } finally {
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
     }
   };
 
@@ -180,23 +195,26 @@ export default function GenerateSection() {
                   This will create a complete application with your components
                 </p>
               </div>
-              <Button
-                onClick={generateFullApp}
-                loading={isGenerating}
-                disabled={isGenerating}
-                size="lg"
-              >
-                {!generatedResponse?.files?.length ? (
-                  <Play className="h-4 w-4 mr-2" />
-                ) : (
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                )}
-                {isGenerating
-                  ? "This may take some time..."
-                  : !generatedResponse?.files?.length
-                    ? "Generate App"
-                    : "Regenerate"}
-              </Button>
+              <div className="flex flex-col items-center gap-2">
+                <Button
+                  onClick={generateFullApp}
+                  disabled={isGenerating}
+                  size="lg"
+                >
+                  {!isGenerating &&
+                    (!generatedResponse?.files?.length ? (
+                      <Play className="h-4 w-4 mr-2" />
+                    ) : (
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                    ))}
+                  {isGenerating
+                    ? "Hang on a few minutes..."
+                    : !generatedResponse?.files?.length
+                      ? "Generate App"
+                      : "Regenerate"}
+                </Button>
+                <Progress value={progressValue} />
+              </div>
             </div>
           )}
         </CardContent>

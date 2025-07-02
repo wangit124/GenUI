@@ -38,7 +38,7 @@ export default function DirectoryViewer() {
   const { generatedResponse: generatedCode } = useGlobalFormStore();
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
-    new Set(["app", "components"]),
+    new Set(["app", "components", "lib"])
   );
 
   const fileStructure = useMemo(() => {
@@ -46,7 +46,7 @@ export default function DirectoryViewer() {
       (prev, curr) => {
         const splitIndex = curr.fileName.lastIndexOf("/");
         const parent =
-          splitIndex === -1 ? "root" : curr.fileName.substring(0, splitIndex);
+          splitIndex === -1 ? "" : curr.fileName.substring(0, splitIndex);
         const child =
           splitIndex === -1
             ? curr.fileName
@@ -56,7 +56,7 @@ export default function DirectoryViewer() {
           : Array.from(new Set([...prev[parent], child]));
         return prev;
       },
-      {} as Record<string, string[]>,
+      {} as Record<string, string[]>
     );
   }, [generatedCode]);
 
@@ -86,7 +86,7 @@ export default function DirectoryViewer() {
   const getFileContent = (filePath: string): string => {
     // Find the file content from the generated files
     const file = generatedCode?.files?.filter(
-      (f) => f.fileName === filePath,
+      (f) => f.fileName === filePath
     )?.[0];
 
     // Debug logging
@@ -94,7 +94,7 @@ export default function DirectoryViewer() {
       console.log(`File not found for path: ${filePath}`);
       console.log(
         "Available files:",
-        generatedCode?.files?.map((f) => f.fileName),
+        generatedCode?.files?.map((f) => f.fileName)
       );
     }
 
@@ -169,7 +169,7 @@ export default function DirectoryViewer() {
             }
           });
         }
-      },
+      }
     );
 
     return structure;
@@ -179,7 +179,7 @@ export default function DirectoryViewer() {
 
   const renderDirectoryTree = (
     structure: Record<string, DirectoryItem>,
-    basePath = "",
+    basePath = ""
   ): React.ReactNode[] => {
     return Object.entries(structure).map(
       ([name, item]: [string, DirectoryItem]) => {
@@ -232,7 +232,7 @@ export default function DirectoryViewer() {
             </Button>
           );
         }
-      },
+      }
     );
   };
 
