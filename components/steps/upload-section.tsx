@@ -12,22 +12,25 @@ import { useConvertFigmaFile } from "@/hooks/useConvertFigmaFile";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/hooks/useAuthStore";
+import { MAX_FILE_COUNT } from "@/lib/constants";
 
 export default function UploadSection() {
   const { authData } = useAuthStore();
-  const { uploadedFiles, setUploadedFiles, figmaImages, setFigmaImages } =
-    useGlobalFormStore();
+  const { figmaImages, setFigmaImages } = useGlobalFormStore();
   const [figmaUrl, setFigmaUrl] = useState("");
   const { mutate: convertFigmaFile, isPending } = useConvertFigmaFile();
   const { toast: showToast } = useToast();
   const router = useRouter();
 
-  const removeFile = (index: number) => {
-    const newFiles = uploadedFiles.filter((_, i) => i !== index);
-    setUploadedFiles(newFiles);
-  };
-
-  const addFigmaImage = () => {
+  const addFile = () => {
+    if (figmaImages.length >= MAX_FILE_COUNT) {
+      showToast({
+        title: "Max file limit reached",
+        description: `You can upload a maximum of ${MAX_FILE_COUNT} figma files`,
+        variant: "destructive",
+      });
+      return;
+    }
     convertFigmaFile(
       { figmaUrl },
       {
@@ -84,7 +87,7 @@ export default function UploadSection() {
             </Button>
           ) : (
             <Button
-              onClick={addFigmaImage}
+              onClick={addFile}
               disabled={!figmaUrl || isPending}
               loading={isPending}
             >
@@ -94,41 +97,14 @@ export default function UploadSection() {
           )}
         </div>
       </div>
-
       <div className="space-y-2">
         <Label className="text-base font-medium">
-          Uploaded Files ({uploadedFiles.length + figmaImages.length})
+          Uploaded Files ({figmaImages.length})
         </Label>
-        <p className="text-sm text-muted-foreground">Max 4 files</p>
+        <p className="text-sm text-muted-foreground">
+          Max {MAX_FILE_COUNT} files
+        </p>
         <div className="grid gap-2">
-          {uploadedFiles.map((file, index) => (
-            <Card key={index}>
-              <CardContent className="flex justify-between p-3">
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={URL.createObjectURL(file)}
-                    alt={file.name}
-                    width={0}
-                    height={0}
-                    style={{ width: 150, height: "auto" }}
-                  />
-                  <div>
-                    <p className="text-sm font-medium">{file.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeFile(index)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
           {figmaImages.map((image, index) => (
             <Card key={index}>
               <CardContent className="flex justify-between p-3">

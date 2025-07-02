@@ -1,6 +1,6 @@
-import { Configuration, GeneratedResponse } from "@/lib/types";
+import { Configuration, GeneratedResponse, StepType } from "@/lib/types";
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 type GlobalFormStoreType = {
   uploadedFiles: File[];
@@ -37,9 +37,6 @@ export const useGlobalFormStore = create<GlobalFormStoreType>()(
       generatedResponse: null,
       setGeneratedResponse: (response) => set({ generatedResponse: response }),
     }),
-    {
-      name: "global-form-store",
-      storage: createJSONStorage(() => sessionStorage),
-    }
+    { name: "global-form-store" }
   )
 );

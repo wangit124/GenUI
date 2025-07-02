@@ -9,7 +9,7 @@ export type AuthData = {
 
 type AuthStoreType = {
   authData?: AuthData;
-  setAuthData: (_authData: AuthData) => void;
+  setAuthData: (_authData: AuthData | undefined) => void;
 };
 
 export const useAuthStore = create<AuthStoreType>()(

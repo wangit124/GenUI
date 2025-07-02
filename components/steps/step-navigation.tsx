@@ -13,11 +13,11 @@ export default function StepNavigation() {
 
   const currentStepIndex = useMemo(
     () => steps.findIndex((s) => s.id === currentStep),
-    [currentStep],
+    [currentStep]
   );
 
   const getStepStatus = (step: StepType) => {
-    if (completedSteps?.has(step)) return StepStatus.COMPLETED;
+    if (completedSteps?.includes(step)) return StepStatus.COMPLETED;
     if (step === currentStep) return StepStatus.ACTIVE;
     if (steps.findIndex((s) => s.id === step) < currentStepIndex)
       return StepStatus.AVAILABLE;
@@ -49,25 +49,25 @@ export default function StepNavigation() {
         return cn(
           baseClasses,
           "bg-green-50 text-green-700 border border-green-200 hover:bg-green-100 cursor-pointer",
-          "dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50 dark:hover:bg-green-900/50",
+          "dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50 dark:hover:bg-green-900/50"
         );
       case StepStatus.ACTIVE:
         return cn(
           baseClasses,
           "bg-primary/10 text-primary shadow-sm",
-          "dark:bg-primary/20 dark:border-primary/30",
+          "dark:bg-primary/20 dark:border-primary/30"
         );
       case StepStatus.AVAILABLE:
         return cn(
           baseClasses,
           "bg-muted/50 text-muted-foreground hover:bg-muted cursor-pointer",
-          "dark:bg-muted/30 dark:hover:bg-muted/50",
+          "dark:bg-muted/30 dark:hover:bg-muted/50"
         );
       case StepStatus.LOCKED:
         return cn(
           baseClasses,
           "bg-muted/20 text-muted-foreground/50 cursor-not-allowed",
-          "dark:bg-muted/10 dark:text-muted-foreground/40",
+          "dark:bg-muted/10 dark:text-muted-foreground/40"
         );
       default:
         return baseClasses;
@@ -76,7 +76,7 @@ export default function StepNavigation() {
 
   const canClickStep = (step: StepType) =>
     steps.findIndex((s) => s.id === step) < currentStepIndex ||
-    completedSteps?.has(step);
+    completedSteps?.includes(step);
 
   return (
     <div className="flex flex-col p-6 gap-2">

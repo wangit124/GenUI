@@ -37,7 +37,7 @@ export default function StepWrapper() {
 
   const handleStepComplete = useCallback(
     (step: StepType) => {
-      if (!completedSteps?.has(step)) {
+      if (!completedSteps?.includes(step)) {
         addCompletedStep(step);
       }
     },
