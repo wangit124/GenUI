@@ -2,6 +2,9 @@
 
 GenUI is a design-to-code generation tool powered by LLMs. It transforms UI designs into code with an intuitive and efficient workflow — ideal for developers looking to streamline their front-end development process.
 
+## 🖥️ Live Demo
+https://gen-ui-teal.vercel.app
+
 ## 🖥️ Video Demo
 
 https://github.com/user-attachments/assets/20785676-8735-44aa-9fa1-0f49d256bcb5
