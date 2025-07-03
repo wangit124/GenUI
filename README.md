@@ -20,7 +20,7 @@ https://github.com/user-attachments/assets/20785676-8735-44aa-9fa1-0f49d256bcb5
 
 1. Link your Figma account (Figma REST API)
 1. Upload your Figma designs and convert them into images (Figma REST API)
-1. Choose base framework (next.js, react.js, angular.js, jquery, etc...)
+1. Choose base web framework (next.js, react.js, angular.js, jquery, etc...)
 1. Choose refactoring settings (aggressive, moderate, or minimal component splitting)
 1. Choose UI, State Management and Form NPM libraries (shadcn, zustand, react-hook-form, etc...)
 1. Click "Generate" (LLM prompting)
