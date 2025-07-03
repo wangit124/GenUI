@@ -35,7 +35,7 @@ https://github.com/user-attachments/assets/20785676-8735-44aa-9fa1-0f49d256bcb5
 
 `TailwindCSS` - UI Styling
 
-`Shadcn & RadixUI` - UI Library
+`RadixUI` - UI Library
 
 `Zustand` - State Management Library
 
