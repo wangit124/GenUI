@@ -7,14 +7,14 @@ https://gen-ui-teal.vercel.app
 
 ## 🎥 Video Demo
 
-https://github.com/user-attachments/assets/20785676-8735-44aa-9fa1-0f49d256bcb5
+https://github.com/user-attachments/assets/2ad47614-fb75-4533-aa77-202bd735da5b
 
 ## 📷 Screenshots
-<img width="1496" alt="Step 1" src="https://github.com/user-attachments/assets/e18a7318-abbc-460f-bde8-210bffca2f35" />
-<img width="1494" alt="Step 2" src="https://github.com/user-attachments/assets/2d107c64-9178-44e2-923e-da7a0dd66478" />
-<img width="1494" alt="Step 3" src="https://github.com/user-attachments/assets/dcf7acb5-6ed9-43dd-b04d-0392a0f4f8cb" />
-<img width="1494" alt="Step 3 5" src="https://github.com/user-attachments/assets/bf45f74a-a32c-48f6-bd84-45afffc37edd" />
-<img width="1490" alt="Step 4" src="https://github.com/user-attachments/assets/326465e5-8c5a-4a11-bbbc-9ec0323a52fd" />
+<img alt="GenUI - Step 1" src="https://github.com/user-attachments/assets/23cd197c-923f-43e6-ba16-dfc7f50d607d" />
+<img alt="GenUI - Step 2" src="https://github.com/user-attachments/assets/e2f39d06-4256-4086-932a-ceba3b27ce98" />
+<img alt="GenUI - Step 3" src="https://github.com/user-attachments/assets/9ce4fa3e-2a3e-476e-bf6b-7ab01be639e1" />
+<img alt="GenUI - Step 3 5" src="https://github.com/user-attachments/assets/091f90d0-89e9-4bdf-8ff9-6a173dc0a534" />
+<img alt="GenUI - Step 4" src="https://github.com/user-attachments/assets/4dd4b4f5-5e4e-4042-a412-1bdb83ac6f2b" />
 
 ## 🚀 Steps
 
