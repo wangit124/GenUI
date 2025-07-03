@@ -1,4 +1,4 @@
-import { Configuration, StepNavItem, StepType } from "./types";
+import { Configuration, GeneratedFile, StepNavItem, StepType } from "./types";
 
 export const APP_URL =
   process.env.NODE_ENV === "development" ? `http://localhost:3000` : "";
@@ -223,16 +223,16 @@ export const formLibraries: {
   },
 ];
 
-export const mockGeneratedCodeResponse = [
+export const mockGeneratedCodeResponse: GeneratedFile[] = [
   {
     id: "home-page",
     fileName: "app/page.tsx",
-    code: '"use client"\n\nimport { useEffect } from "react"\nimport { useRouter } from "next/navigation"\nimport { useAuthStore } from "@/stores/auth-store"\n\nexport default function HomePage() {\n  const router = useRouter()\n  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)\n\n  useEffect(() => {\n    if (isAuthenticated) {\n      router.push("/profile")\n    } else {\n      router.push("/register")\n    }\n  }, [isAuthenticated, router])\n\n  return (\n    <div className="min-h-screen bg-gray-50 flex items-center justify-center">\n      <div className="text-center">\n        <h1 className="text-2xl font-light mb-4">Loading...</h1>\n      </div>\n    </div>\n  )\n}',
+    code: "...code goes here...",
   },
   {
     id: "back-button",
     fileName: "components/back-button.tsx",
-    code: '"use client"\n\nimport { ArrowLeft } from "lucide-react"\nimport { Button } from "@/components/ui/button"\n\ninterface BackButtonProps {\n  onClick?: () => void\n}\n\nexport function BackButton({ onClick }: BackButtonProps) {\n  return (\n    <Button variant="ghost" size="icon" className="absolute top-4 left-4 z-10" onClick={onClick}>\n      <ArrowLeft className="h-6 w-6" />\n    </Button>\n  )\n}',
+    code: "...code goes here...",
   },
 ];
 

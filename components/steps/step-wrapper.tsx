@@ -22,6 +22,12 @@ import { useStepsStore } from "@/hooks/useStepsStore";
 import { cn } from "@/lib/utils";
 import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import { useToast } from "@/hooks/useToast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function StepWrapper() {
   const { toast: showToast } = useToast();
@@ -153,7 +159,7 @@ export default function StepWrapper() {
   }, [currentStep]);
 
   return (
-    <div className="container py-6 pr-6">
+    <div className="md:container px-6 md:pl-0 md:pr-6 md:py-6">
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -172,18 +178,9 @@ export default function StepWrapper() {
         </CardHeader>
         <CardContent className="space-y-6">
           {stepContent}
-          <div className="flex items-center justify-between pt-6 border-t">
-            <Button
-              variant="outline"
-              onClick={handlePrevStep}
-              disabled={currentStepIndex === 0}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Previous
-            </Button>
-
+          <div className="flex flex-col items-center justify-between pt-6 border-t">
             <div className="flex items-center justify-between gap-2">
-              <div className="text-sm font-medium">
+              <div className="text-sm font-medium shrink-0">
                 Step {currentStepIndex + 1} of {steps.length}
               </div>
               <div className="flex items-center gap-1">
@@ -200,23 +197,49 @@ export default function StepWrapper() {
                 ))}
               </div>
             </div>
-
-            <div className="flex items-center gap-2">
-              <Button onClick={handleNextStep} disabled={!canProceedToNext()}>
-                {currentStepIndex === steps.length - 1 ? "Export" : "Next"}
-                {currentStepIndex === steps.length - 1 ? (
-                  <Download className="h-4 w-4 ml-2" />
-                ) : (
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                )}
-              </Button>
+            <div className="flex w-full justify-between items-center mt-4">
               <Button
-                onClick={clearAll}
-                disabled={!completedSteps?.includes(StepType.EXPORT)}
+                variant="outline"
+                onClick={handlePrevStep}
+                disabled={currentStepIndex === 0}
               >
-                <RotateCw className="h-4 w-4 mr-2" />
-                Restart (Clear All)
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Previous
               </Button>
+
+              <div className="flex items-center gap-2">
+                <Button onClick={handleNextStep} disabled={!canProceedToNext()}>
+                  {currentStepIndex === steps.length - 1 ? "Export" : "Next"}
+                  {currentStepIndex === steps.length - 1 ? (
+                    <Download className="h-4 w-4 ml-2" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  )}
+                </Button>
+                {currentStepIndex === steps.length - 1 && (
+                  <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button
+                          onClick={clearAll}
+                          disabled={!completedSteps?.includes(StepType.EXPORT)}
+                        >
+                          <RotateCw className="h-4 w-4 mr-2" />
+                          Restart
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        side="top"
+                        align="center"
+                        title="To limit llm costs, you may only generate once"
+                        className="text-center"
+                      >
+                        To limit LLM costs, you <br /> may only generate once
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+              </div>
             </div>
           </div>
         </CardContent>

@@ -21,6 +21,8 @@ export async function POST(request: Request) {
 
   const prompt = getGenerateCodeLLMPrompt(configuration);
 
+  console.info({ prompt });
+
   const figmaImagesToMessage: ContentBlockParam[] = figmaImages.map(
     (imageUrl) => ({
       type: "image",
@@ -28,8 +30,10 @@ export async function POST(request: Request) {
         type: "url",
         url: imageUrl,
       },
-    }),
+    })
   );
+
+  console.info({ figmaImagesToMessage });
 
   const response = await anthropic.messages.create({
     model: ANTHROPIC_MODELS.CLAUDE_SONNET_4,
@@ -50,8 +54,13 @@ export async function POST(request: Request) {
 
   // @ts-ignore
   const llmText = response?.content?.[0]?.text as string;
+
+  console.info({ llmText });
+
   const files: GeneratedFile[] = JSON.parse(llmText);
   const tokensUsed = response.usage.input_tokens + response.usage.output_tokens;
+
+  console.info({ files, tokensUsed });
 
   return new Response(JSON.stringify({ files, tokensUsed }), {
     status: 200,

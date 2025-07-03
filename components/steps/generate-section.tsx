@@ -85,6 +85,7 @@ export default function GenerateSection() {
         variant: "destructive",
       });
     } finally {
+      setProgressValue(0);
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
       }
@@ -101,20 +102,19 @@ export default function GenerateSection() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="grid gap-2">
               {figmaImages.map((image, index) => (
                 <Card key={index}>
-                  <CardContent className="flex justify-between p-3">
+                  <CardContent className="flex justify-center p-3">
                     <div className="flex items-center gap-3">
                       <Image
                         src={image}
                         alt={image}
                         width={0}
                         height={0}
-                        style={{ width: 150, height: "auto" }}
+                        style={{ width: 200, height: "auto" }}
                       />
-                      <p className="text-sm font-medium">{image}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -143,7 +143,7 @@ export default function GenerateSection() {
                   Tokens used: {tokensUsed}
                 </AlertDescription>
               </Alert>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+              <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
                 {generatedResponse?.files?.map((component) => (
                   <Card
                     key={component.id}
@@ -191,8 +191,8 @@ export default function GenerateSection() {
                     ? "Ready to Generate"
                     : "Regenerate"}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  This will create a complete application with your components
+                <p className="text-sm text-muted-foreground pr-2">
+                  This will create a complete application
                 </p>
               </div>
               <div className="flex flex-col items-center gap-2">

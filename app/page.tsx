@@ -6,9 +6,9 @@ import StepWrapper from "@/components/steps/step-wrapper";
 
 export default function Root() {
   return (
-    <div>
+    <div className="pb-6">
       <Header />
-      <div className="flex">
+      <div className="flex flex-col md:flex-row">
         <StepNavigation />
         <StepWrapper />
       </div>
