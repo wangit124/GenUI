@@ -202,6 +202,10 @@ export default function StepWrapper() {
               </Button>
 
               <div className="flex items-center gap-2">
+                <Button onClick={clearAll}>
+                  <RotateCw className="h-4 w-4 mr-2" />
+                  Restart
+                </Button>
                 <Button onClick={handleNextStep} disabled={!canProceedToNext()}>
                   {currentStepIndex === steps.length - 1 ? "Export" : "Next"}
                   {currentStepIndex === steps.length - 1 ? (
@@ -209,10 +213,6 @@ export default function StepWrapper() {
                   ) : (
                     <ArrowRight className="h-4 w-4 ml-2" />
                   )}
-                </Button>
-                <Button onClick={clearAll}>
-                  <RotateCw className="h-4 w-4 mr-2" />
-                  Restart
                 </Button>
               </div>
             </div>

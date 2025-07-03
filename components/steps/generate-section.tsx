@@ -220,6 +220,7 @@ export default function GenerateSection() {
                       <Button
                         onClick={generateFullApp}
                         disabled={disableGenerate}
+                        loading={isGenerating}
                         size="lg"
                       >
                         {!isGenerating &&
