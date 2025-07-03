@@ -22,8 +22,10 @@ import { useStepsStore } from "@/hooks/useStepsStore";
 import { cn } from "@/lib/utils";
 import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import { useToast } from "@/hooks/useToast";
+import { useIsMobile } from "@/hooks/useMobile";
 
 export default function StepWrapper() {
+  const isMobile = useIsMobile();
   const { toast: showToast } = useToast();
 
   const {
@@ -202,10 +204,12 @@ export default function StepWrapper() {
               </Button>
 
               <div className="flex items-center gap-2">
-                <Button onClick={clearAll}>
-                  <RotateCw className="h-4 w-4 mr-2" />
-                  Restart
-                </Button>
+                {!isMobile && (
+                  <Button onClick={clearAll}>
+                    <RotateCw className="h-4 w-4 mr-2" />
+                    Restart
+                  </Button>
+                )}
                 <Button onClick={handleNextStep} disabled={!canProceedToNext()}>
                   {currentStepIndex === steps.length - 1 ? "Export" : "Next"}
                   {currentStepIndex === steps.length - 1 ? (
@@ -219,6 +223,14 @@ export default function StepWrapper() {
           </div>
         </CardContent>
       </Card>
+      {isMobile && (
+        <div className="w-full mt-6 flex justify-center items-center">
+          <Button variant="outline" onClick={clearAll}>
+            <RotateCw className="h-4 w-4 mr-2" />
+            Restart
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
