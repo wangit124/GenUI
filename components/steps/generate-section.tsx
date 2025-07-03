@@ -112,6 +112,30 @@ export default function GenerateSection() {
     typeof generateCountData.count !== "number" ||
     generateCountData.count >= MAX_GENERATION_COUNT;
 
+  const generateButton = (
+    <div className="flex flex-col items-center gap-2">
+      <Button
+        onClick={generateFullApp}
+        disabled={disableGenerate}
+        loading={isGenerating}
+        size="lg"
+      >
+        {!isGenerating &&
+          (!generatedResponse?.files?.length ? (
+            <Play className="h-4 w-4 mr-2" />
+          ) : (
+            <RefreshCw className="h-4 w-4 mr-2" />
+          ))}
+        {isGenerating
+          ? "Hang on a few minutes..."
+          : !generatedResponse?.files?.length
+            ? "Generate App"
+            : "Regenerate"}
+      </Button>
+      <Progress value={progressValue} />
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       <Card>
@@ -213,43 +237,25 @@ export default function GenerateSection() {
                   This will create a complete application
                 </p>
               </div>
-              <TooltipProvider delayDuration={0}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <div className="flex flex-col items-center gap-2">
-                      <Button
-                        onClick={generateFullApp}
-                        disabled={disableGenerate}
-                        loading={isGenerating}
-                        size="lg"
-                      >
-                        {!isGenerating &&
-                          (!generatedResponse?.files?.length ? (
-                            <Play className="h-4 w-4 mr-2" />
-                          ) : (
-                            <RefreshCw className="h-4 w-4 mr-2" />
-                          ))}
-                        {isGenerating
-                          ? "Hang on a few minutes..."
-                          : !generatedResponse?.files?.length
-                            ? "Generate App"
-                            : "Regenerate"}
-                      </Button>
-                      <Progress value={progressValue} />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="top"
-                    align="center"
-                    title="Generation Limit Reached"
-                    className="text-center"
-                  >
-                    You have reached the free <br /> code generation limit:{" "}
-                    {MAX_GENERATION_COUNT} <br />
-                    Limited due to LLM costs
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              {disableGenerate ? (
+                <TooltipProvider delayDuration={0}>
+                  <Tooltip>
+                    <TooltipTrigger>{generateButton}</TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      align="center"
+                      title="Generation Limit Reached"
+                      className="text-center"
+                    >
+                      You have reached the free <br /> code generation limit:{" "}
+                      {MAX_GENERATION_COUNT} <br />
+                      Limited due to LLM costs
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                generateButton
+              )}
             </div>
           )}
         </CardContent>
