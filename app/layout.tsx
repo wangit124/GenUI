@@ -8,7 +8,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "GenUI - Design to Code",
-  description: "Transform your designs into production-ready UI code in seconds",
+  description:
+    "Transform your designs into production-ready UI code in seconds",
 };
 
 export default function RootLayout({

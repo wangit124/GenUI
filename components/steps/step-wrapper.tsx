@@ -210,12 +210,10 @@ export default function StepWrapper() {
                     <ArrowRight className="h-4 w-4 ml-2" />
                   )}
                 </Button>
-                {currentStepIndex === steps.length - 1 && (
-                  <Button onClick={clearAll}>
-                    <RotateCw className="h-4 w-4 mr-2" />
-                    Restart
-                  </Button>
-                )}
+                <Button onClick={clearAll}>
+                  <RotateCw className="h-4 w-4 mr-2" />
+                  Restart
+                </Button>
               </div>
             </div>
           </div>
