@@ -41,14 +41,6 @@ export const baseFrameworks: {
     id: "reactjs",
     name: "React.js",
   },
-  {
-    id: "angular",
-    name: "Angular.js",
-  },
-  {
-    id: "jquery",
-    name: "HTML & jQuery",
-  },
 ];
 
 export const componentSplittingConfig: Record<
