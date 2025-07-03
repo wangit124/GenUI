@@ -4,15 +4,19 @@ import {
   ANTHROPIC_MODELS,
   MAX_OUTPUT_TOKEN_COUNT,
 } from "@/lib/anthropic";
+import { Generation } from "@/lib/generation";
 import { getGenerateCodeLLMPrompt } from "@/lib/prompts";
 import { GeneratedFile } from "@/lib/types";
+import { User } from "@/lib/user";
 import { ContentBlockParam } from "@anthropic-ai/sdk/resources/index.mjs";
 
 export async function POST(request: Request) {
-  const userId = request?.headers?.get("x-user-id");
-  const figmaAccessToken = request?.headers?.get("x-figma-access-token");
-
-  if (!userId || !figmaAccessToken) {
+  const figmaUserId = request?.headers?.get("x-figma-user-id");
+  if (!figmaUserId) {
+    throw new Error("Unauthorized");
+  }
+  const user = await User.findOrCreate(figmaUserId);
+  if (!user) {
     throw new Error("Unauthorized");
   }
 
@@ -30,7 +34,7 @@ export async function POST(request: Request) {
         type: "url",
         url: imageUrl,
       },
-    }),
+    })
   );
 
   console.info({ figmaImagesToMessage });
@@ -52,7 +56,7 @@ export async function POST(request: Request) {
     ],
   });
 
-  // @ts-ignore
+  // @ts-expect-error text field actually exists
   const llmText = response?.content?.[0]?.text as string;
 
   console.info({ llmText });
@@ -61,6 +65,12 @@ export async function POST(request: Request) {
   const tokensUsed = response.usage.input_tokens + response.usage.output_tokens;
 
   console.info({ files, tokensUsed });
+
+  try {
+    await Generation.create({ userId: user.id, tokenCount: tokensUsed });
+  } catch (error) {
+    console.error(error);
+  }
 
   return new Response(JSON.stringify({ files, tokensUsed }), {
     status: 200,

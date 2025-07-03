@@ -22,12 +22,6 @@ import { useStepsStore } from "@/hooks/useStepsStore";
 import { cn } from "@/lib/utils";
 import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import { useToast } from "@/hooks/useToast";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 export default function StepWrapper() {
   const { toast: showToast } = useToast();
@@ -42,7 +36,7 @@ export default function StepWrapper() {
 
   const currentStepIndex = useMemo(
     () => steps.findIndex((s) => s.id === currentStep),
-    [currentStep],
+    [currentStep]
   );
 
   const { configuration, resetStore, figmaImages, generatedResponse } =
@@ -59,7 +53,7 @@ export default function StepWrapper() {
         addCompletedStep(step);
       }
     },
-    [addCompletedStep, completedSteps],
+    [addCompletedStep, completedSteps]
   );
 
   const exportFiles = async () => {
@@ -134,7 +128,7 @@ export default function StepWrapper() {
         return Boolean(
           configuration?.baseFramework &&
             configuration?.libraries?.ui &&
-            configuration?.styling?.componentSplitting,
+            configuration?.styling?.componentSplitting
         );
       case StepType.GENERATE:
         return Boolean(generatedResponse?.files?.length);
@@ -191,7 +185,7 @@ export default function StepWrapper() {
                       "h-2 w-8 rounded-full transition-colors",
                       index <= currentStepIndex
                         ? "bg-primary"
-                        : "bg-muted dark:bg-muted/50",
+                        : "bg-muted dark:bg-muted/50"
                     )}
                   />
                 ))}
@@ -217,27 +211,10 @@ export default function StepWrapper() {
                   )}
                 </Button>
                 {currentStepIndex === steps.length - 1 && (
-                  <TooltipProvider delayDuration={0}>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Button
-                          onClick={clearAll}
-                          disabled={!completedSteps?.includes(StepType.EXPORT)}
-                        >
-                          <RotateCw className="h-4 w-4 mr-2" />
-                          Restart
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent
-                        side="top"
-                        align="center"
-                        title="To limit llm costs, you may only generate once"
-                        className="text-center"
-                      >
-                        To limit LLM costs, you <br /> may only generate once
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Button onClick={clearAll}>
+                    <RotateCw className="h-4 w-4 mr-2" />
+                    Restart
+                  </Button>
                 )}
               </div>
             </div>

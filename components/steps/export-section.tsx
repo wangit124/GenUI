@@ -26,7 +26,6 @@ import {
   Package,
 } from "lucide-react";
 import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
-import { GeneratedFile } from "@/lib/types";
 
 interface DirectoryItem {
   type: "file" | "folder";
@@ -38,7 +37,7 @@ export default function DirectoryViewer() {
   const { generatedResponse: generatedCode } = useGlobalFormStore();
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
-    new Set(["app", "components", "lib"]),
+    new Set(["app", "components", "lib"])
   );
 
   const fileStructure = useMemo(() => {
@@ -56,7 +55,7 @@ export default function DirectoryViewer() {
           : Array.from(new Set([...prev[parent], child]));
         return prev;
       },
-      {} as Record<string, string[]>,
+      {} as Record<string, string[]>
     );
   }, [generatedCode]);
 
@@ -86,15 +85,15 @@ export default function DirectoryViewer() {
   const getFileContent = (filePath: string): string => {
     // Find the file content from the generated files
     const file = generatedCode?.files?.filter(
-      (f) => f.fileName === filePath,
+      (f) => f.fileName === filePath
     )?.[0];
 
     // Debug logging
     if (!file) {
-      console.log(`File not found for path: ${filePath}`);
-      console.log(
+      console.info(`File not found for path: ${filePath}`);
+      console.info(
         "Available files:",
-        generatedCode?.files?.map((f) => f.fileName),
+        generatedCode?.files?.map((f) => f.fileName)
       );
     }
 
@@ -169,7 +168,7 @@ export default function DirectoryViewer() {
             }
           });
         }
-      },
+      }
     );
 
     return structure;
@@ -179,7 +178,7 @@ export default function DirectoryViewer() {
 
   const renderDirectoryTree = (
     structure: Record<string, DirectoryItem>,
-    basePath = "",
+    basePath = ""
   ): React.ReactNode[] => {
     return Object.entries(structure).map(
       ([name, item]: [string, DirectoryItem]) => {
@@ -232,7 +231,7 @@ export default function DirectoryViewer() {
             </Button>
           );
         }
-      },
+      }
     );
   };
 

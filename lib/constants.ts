@@ -237,3 +237,5 @@ export const mockGeneratedCodeResponse: GeneratedFile[] = [
 ];
 
 export const MAX_FILE_COUNT = 2;
+
+export const MAX_GENERATION_COUNT = 1;

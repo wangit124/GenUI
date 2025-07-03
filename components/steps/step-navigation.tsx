@@ -19,8 +19,8 @@ export default function StepNavigation() {
   );
 
   const getStepStatus = (step: StepType) => {
-    if (completedSteps?.includes(step)) return StepStatus.COMPLETED;
     if (step === currentStep) return StepStatus.ACTIVE;
+    if (completedSteps?.includes(step)) return StepStatus.COMPLETED;
     if (steps.findIndex((s) => s.id === step) < currentStepIndex)
       return StepStatus.AVAILABLE;
     return StepStatus.LOCKED;

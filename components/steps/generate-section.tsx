@@ -17,8 +17,18 @@ import { useGlobalFormStore } from "@/hooks/useGlobalFormStore";
 import Image from "next/image";
 import { useGenerateCode } from "@/hooks/useGenerateCode";
 import { useToast } from "@/hooks/useToast";
-import { mockGeneratedCodeResponse } from "@/lib/constants";
+import {
+  MAX_GENERATION_COUNT,
+  mockGeneratedCodeResponse,
+} from "@/lib/constants";
 import { Progress } from "@/components/ui/progress";
+import { useGenerateCount } from "@/hooks/useGenerateCount";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function GenerateSection() {
   const { toast: showToast } = useToast();
@@ -33,6 +43,8 @@ export default function GenerateSection() {
 
   const { mutateAsync: generateCode, isPending: isGenerating } =
     useGenerateCode();
+
+  const { data: generateCountData, isError, isLoading } = useGenerateCount();
 
   const [copiedIds, setCopiedIds] = useState<Set<string>>(new Set());
   const [progressValue, setProgressValue] = useState<number>(0);
@@ -92,6 +104,14 @@ export default function GenerateSection() {
     }
   };
 
+  const disableGenerate =
+    isGenerating ||
+    isLoading ||
+    isError ||
+    !generateCountData ||
+    typeof generateCountData.count !== "number" ||
+    generateCountData.count >= MAX_GENERATION_COUNT;
+
   return (
     <div className="space-y-6">
       <Card>
@@ -103,23 +123,21 @@ export default function GenerateSection() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <div className="grid gap-2">
-              {figmaImages.map((image, index) => (
-                <Card key={index}>
-                  <CardContent className="flex justify-center p-3">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src={image}
-                        alt={image}
-                        width={0}
-                        height={0}
-                        style={{ width: 200, height: "auto" }}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {figmaImages.map((image, index) => (
+              <Card key={index}>
+                <CardContent className="flex justify-center p-3">
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src={image}
+                      alt={image}
+                      width={0}
+                      height={0}
+                      style={{ width: 200, height: "auto" }}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </CardContent>
       </Card>
@@ -195,26 +213,42 @@ export default function GenerateSection() {
                   This will create a complete application
                 </p>
               </div>
-              <div className="flex flex-col items-center gap-2">
-                <Button
-                  onClick={generateFullApp}
-                  disabled={isGenerating}
-                  size="lg"
-                >
-                  {!isGenerating &&
-                    (!generatedResponse?.files?.length ? (
-                      <Play className="h-4 w-4 mr-2" />
-                    ) : (
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                    ))}
-                  {isGenerating
-                    ? "Hang on a few minutes..."
-                    : !generatedResponse?.files?.length
-                      ? "Generate App"
-                      : "Regenerate"}
-                </Button>
-                <Progress value={progressValue} />
-              </div>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="flex flex-col items-center gap-2">
+                      <Button
+                        onClick={generateFullApp}
+                        disabled={disableGenerate}
+                        size="lg"
+                      >
+                        {!isGenerating &&
+                          (!generatedResponse?.files?.length ? (
+                            <Play className="h-4 w-4 mr-2" />
+                          ) : (
+                            <RefreshCw className="h-4 w-4 mr-2" />
+                          ))}
+                        {isGenerating
+                          ? "Hang on a few minutes..."
+                          : !generatedResponse?.files?.length
+                            ? "Generate App"
+                            : "Regenerate"}
+                      </Button>
+                      <Progress value={progressValue} />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    align="center"
+                    title="Generation Limit Reached"
+                    className="text-center"
+                  >
+                    You have reached the free <br /> code generation limit:{" "}
+                    {MAX_GENERATION_COUNT} <br />
+                    Limited due to LLM costs
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           )}
         </CardContent>
