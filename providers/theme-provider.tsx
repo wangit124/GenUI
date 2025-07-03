@@ -37,7 +37,7 @@ export function useColorTheme() {
 export default function ThemeProvider({
   children,
   defaultColorTheme = Color.PURPLE,
-  storageKey = "instaui-color-theme",
+  storageKey = "genui-color-theme",
   ...props
 }: ThemeProviderProps) {
   const [colorTheme, setColorTheme] = useState<Color>(() => {

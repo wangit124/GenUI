@@ -7,8 +7,8 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "InstaUI - Design to Code Generator",
-  description: "Transform your designs into production-ready UI components",
+  title: "GenUI - Design to Code in seconds",
+  description: "Transform your designs into production-ready UI components with 1-click",
 };
 
 export default function RootLayout({

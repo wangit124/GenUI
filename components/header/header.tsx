@@ -13,9 +13,9 @@ export default function Header() {
             <Code2 className="h-4 w-4 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-xl font-bold">InstaUI</h1>
+            <h1 className="text-xl font-bold">GenUI</h1>
             <p className="text-xs text-muted-foreground">
-              Design to Code Generator
+              Design to Code in Seconds
             </p>
           </div>
         </div>
