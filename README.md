@@ -2,6 +2,13 @@
 
 GenUI is a design-to-code generation tool powered by LLMs. It transforms UI designs into code with an intuitive and efficient workflow — ideal for developers looking to streamline their front-end development process.
 
+## 🖥️ Live Demo
+
+## 📷 Screenshots
+<img width="1496" alt="Step 1" src="https://github.com/user-attachments/assets/e18a7318-abbc-460f-bde8-210bffca2f35" />
+<img width="1494" alt="Step 2" src="https://github.com/user-attachments/assets/2d107c64-9178-44e2-923e-da7a0dd66478" />
+<img width="1494" alt="Step 3" src="https://github.com/user-attachments/assets/dcf7acb5-6ed9-43dd-b04d-0392a0f4f8cb" />
+
 ## 🚀 Steps
 
 1. Link your Figma account (Figma REST API)
@@ -13,9 +20,6 @@ GenUI is a design-to-code generation tool powered by LLMs. It transforms UI desi
 1. View interactive directory structure and code file content
 1. Export your code as a ZIP file
 1. Option to restart the flow from scratch
-
-## 🖥️ Live Demo
-
 
 ## 💻 Tech Stack
 `Next.js` - Frontend App Server
