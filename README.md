@@ -19,12 +19,19 @@ GenUI is a design-to-code generation tool powered by LLMs. It transforms UI desi
 
 ## 💻 Tech Stack
 `Next.js` - Frontend App Server
+
 `Node.js` - Backend API Server
+
 `TailwindCSS` - UI Styling
+
 `Shadcn & RadixUI` - UI Library
+
 `Zustand` - State Management Library
+
 `Supabase` - Database
+
 `Figma API` - Auth and Images
+
 `Anthropic API` - Code Generation
 
 ## 🛠️ Getting Started
