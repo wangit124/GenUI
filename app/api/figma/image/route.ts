@@ -1,10 +1,14 @@
 import { FIGMA_API_ENDPOINT } from "@/lib/figma";
+import { User } from "@/lib/user";
 
 export async function POST(request: Request) {
-  const userId = request?.headers?.get("x-user-id");
+  const figmaUserId = request?.headers?.get("x-figma-user-id");
   const figmaAccessToken = request?.headers?.get("x-figma-access-token");
-
-  if (!userId || !figmaAccessToken) {
+  if (!figmaUserId || !figmaAccessToken) {
+    throw new Error("Unauthorized");
+  }
+  const user = await User.findOrCreate(figmaUserId);
+  if (!user) {
     throw new Error("Unauthorized");
   }
 
@@ -28,7 +32,7 @@ export async function POST(request: Request) {
       headers: figmaAccessToken
         ? { Authorization: `Bearer ${figmaAccessToken}` }
         : undefined,
-    },
+    }
   );
   const figmaData = await figmaResponse.json();
 
@@ -41,6 +45,6 @@ export async function POST(request: Request) {
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
-    },
+    }
   );
 }

@@ -10,7 +10,7 @@ export const useConvertFigmaFile = () => {
         method: "POST",
         headers: headerData
           ? {
-              "x-user-id": headerData.userId,
+              "x-figma-user-id": headerData.userId,
               "x-figma-access-token": headerData.accessToken,
             }
           : undefined,

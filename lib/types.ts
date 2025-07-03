@@ -56,3 +56,9 @@ export interface GeneratedFile {
 export interface GeneratedResponse {
   files?: GeneratedFile[];
 }
+
+export interface FigmaAuthObject {
+  user_id_string: string;
+  access_token: string;
+  expires_in: number;
+}

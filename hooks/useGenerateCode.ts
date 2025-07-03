@@ -11,16 +11,13 @@ export const useGenerateCode = () => {
   return useMutation({
     mutationKey: ["generate-code"],
     mutationFn: async (
-      payload: UseGenerateCodeMutationInput,
+      payload: UseGenerateCodeMutationInput
     ): Promise<{ files?: GeneratedFile[]; tokensUsed?: number }> => {
       const headerData = useAuthStore.getState().authData;
       const response = await fetch("/api/generate/code", {
         method: "POST",
         headers: headerData
-          ? {
-              "x-user-id": headerData.userId,
-              "x-figma-access-token": headerData.accessToken,
-            }
+          ? { "x-figma-user-id": headerData.userId }
           : undefined,
         body: JSON.stringify(payload),
       });
