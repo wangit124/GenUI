@@ -33,6 +33,6 @@ export default function Icon() {
         </svg>
       </div>
     ),
-    { width: 32, height: 32 }
+    { width: 32, height: 32 },
   );
 }

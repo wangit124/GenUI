@@ -45,7 +45,7 @@ export default function FigmaOauthCallback() {
             });
             router.push("/");
           },
-        }
+        },
       );
     }
   }, []);

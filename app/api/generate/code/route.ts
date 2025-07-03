@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         type: "url",
         url: imageUrl,
       },
-    })
+    }),
   );
 
   console.info({ figmaImagesToMessage });

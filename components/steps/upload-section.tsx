@@ -50,7 +50,7 @@ export default function UploadSection() {
             variant: "destructive",
           });
         },
-      }
+      },
     );
   };
 
