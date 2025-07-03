@@ -4,10 +4,14 @@ GenUI is a design-to-code generation tool powered by LLMs. It transforms UI desi
 
 ## 🖥️ Live Demo
 
+https://github.com/user-attachments/assets/20785676-8735-44aa-9fa1-0f49d256bcb5
+
 ## 📷 Screenshots
 <img width="1496" alt="Step 1" src="https://github.com/user-attachments/assets/e18a7318-abbc-460f-bde8-210bffca2f35" />
 <img width="1494" alt="Step 2" src="https://github.com/user-attachments/assets/2d107c64-9178-44e2-923e-da7a0dd66478" />
 <img width="1494" alt="Step 3" src="https://github.com/user-attachments/assets/dcf7acb5-6ed9-43dd-b04d-0392a0f4f8cb" />
+<img width="1494" alt="Step 3 5" src="https://github.com/user-attachments/assets/bf45f74a-a32c-48f6-bd84-45afffc37edd" />
+<img width="1490" alt="Step 4" src="https://github.com/user-attachments/assets/326465e5-8c5a-4a11-bbbc-9ec0323a52fd" />
 
 ## 🚀 Steps
 
