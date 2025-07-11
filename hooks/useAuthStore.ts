@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useStepsStore } from "./useStepsStore";
+import { useGlobalFormStore } from "./useGlobalFormStore";
 
 export type AuthData = {
   userId: string;
@@ -10,6 +12,7 @@ export type AuthData = {
 type AuthStoreType = {
   authData?: AuthData;
   setAuthData: (_authData: AuthData | undefined) => void;
+  logout: () => void;
 };
 
 export const useAuthStore = create<AuthStoreType>()(
@@ -17,7 +20,12 @@ export const useAuthStore = create<AuthStoreType>()(
     (set) => ({
       authData: undefined,
       setAuthData: (authData) => set({ authData }),
+      logout: () => {
+        useStepsStore.getState().resetStore();
+        useGlobalFormStore.getState().resetStore();
+        set({ authData: undefined });
+      },
     }),
-    { name: "auth-store" },
-  ),
+    { name: "auth-store" }
+  )
 );

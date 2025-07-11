@@ -15,7 +15,7 @@ import { useAuthStore } from "@/hooks/useAuthStore";
 import { MAX_FILE_COUNT } from "@/lib/constants";
 
 export default function UploadSection() {
-  const { authData } = useAuthStore();
+  const { authData, logout } = useAuthStore();
   const { figmaImages, setFigmaImages } = useGlobalFormStore();
   const [figmaUrl, setFigmaUrl] = useState("");
   const { mutate: convertFigmaFile, isPending } = useConvertFigmaFile();
@@ -50,7 +50,7 @@ export default function UploadSection() {
             variant: "destructive",
           });
         },
-      },
+      }
     );
   };
 
@@ -86,14 +86,20 @@ export default function UploadSection() {
               Link Figma Account
             </Button>
           ) : (
-            <Button
-              onClick={addFile}
-              disabled={!figmaUrl || isPending}
-              loading={isPending}
-            >
-              <Link className="h-4 w-4 mr-2" />
-              Add Link
-            </Button>
+            <>
+              <Button
+                onClick={addFile}
+                disabled={!figmaUrl || isPending}
+                loading={isPending}
+              >
+                <Link className="h-4 w-4 mr-2" />
+                Add Design
+              </Button>
+              <Button onClick={logout}>
+                <X className="h-4 w-4 mr-2" />
+                Unlink Figma
+              </Button>
+            </>
           )}
         </div>
       </div>

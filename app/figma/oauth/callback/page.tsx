@@ -12,7 +12,7 @@ export default function FigmaOauthCallback() {
   const { setAuthData } = useAuthStore();
   const router = useRouter();
 
-  useEffect(() => {
+  const handleAuthCallback = () => {
     const url = new URL(window.location.href);
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
@@ -45,9 +45,12 @@ export default function FigmaOauthCallback() {
             });
             router.push("/");
           },
-        },
+        }
       );
     }
+  };
+  useEffect(() => {
+    handleAuthCallback();
   }, []);
 
   return (
