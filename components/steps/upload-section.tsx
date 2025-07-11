@@ -72,7 +72,7 @@ export default function UploadSection() {
           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row gap-2">
           <Input
             placeholder="Ex: https://www.figma.com/design/{file_id}/{file_name}?node-id={node-ids}"
             value={figmaUrl}
