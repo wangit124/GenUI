@@ -74,6 +74,8 @@ export default function UploadSection() {
 
         <div className="flex flex-col md:flex-row gap-2">
           <Input
+            aria-label="add figma design url input"
+            data-testid="add_figma_design_url_input"
             placeholder="Ex: https://www.figma.com/design/{file_id}/{file_name}?node-id={node-ids}"
             value={figmaUrl}
             onChange={(e) => setFigmaUrl(e.target.value)}
@@ -81,7 +83,11 @@ export default function UploadSection() {
             className="flex-1"
           />
           {!authData ? (
-            <Button onClick={linkFigmaAccount}>
+            <Button
+              aria-label="link figma account button"
+              data-testid="link_figma_account_button"
+              onClick={linkFigmaAccount}
+            >
               <Figma className="h-4 w-4 mr-2" />
               Link Figma Account
             </Button>
@@ -89,13 +95,19 @@ export default function UploadSection() {
             <>
               <Button
                 onClick={addFile}
+                aria-label="add figma design button"
+                data-testid="add_figma_design_button"
                 disabled={!figmaUrl || isPending}
                 loading={isPending}
               >
                 <Link className="h-4 w-4 mr-2" />
                 Add Design
               </Button>
-              <Button onClick={logout}>
+              <Button
+                aria-label="unlink figma account button"
+                data-testid="unlink_figma_account_button"
+                onClick={logout}
+              >
                 <X className="h-4 w-4 mr-2" />
                 Unlink Figma
               </Button>
@@ -110,9 +122,9 @@ export default function UploadSection() {
         <p className="text-sm text-muted-foreground">
           Maximum {MAX_FILE_COUNT} files
         </p>
-        <div className="grid gap-2">
+        <div className="grid gap-2" data-testid="uploaded_files_list">
           {figmaImages.map((image, index) => (
-            <Card key={index}>
+            <Card key={`${image}-${index}`}>
               <CardContent className="flex justify-between p-3">
                 <div className="flex items-center gap-3">
                   <Image
@@ -127,6 +139,8 @@ export default function UploadSection() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  aria-label={`remove uploaded image button ${index}`}
+                  data-testid={`remove_uploaded_image_button_${index}`}
                   onClick={() => removeFigmaImage(image)}
                 >
                   <X className="h-4 w-4" />
