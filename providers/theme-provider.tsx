@@ -18,7 +18,7 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  colorTheme: Color.BLUE,
+  colorTheme: Color.ORANGE,
   setColorTheme: () => null,
 };
 
@@ -36,7 +36,7 @@ export function useColorTheme() {
 
 export default function ThemeProvider({
   children,
-  defaultColorTheme = Color.PURPLE,
+  defaultColorTheme = Color.ORANGE,
   storageKey = "genui-color-theme",
   ...props
 }: ThemeProviderProps) {
@@ -73,7 +73,7 @@ export default function ThemeProvider({
 
   return (
     <ColorThemeProviderContext.Provider value={value}>
-      <NextThemesProvider attribute="class" defaultTheme="dark" {...props}>
+      <NextThemesProvider attribute="class" defaultTheme="light" {...props}>
         {children}
       </NextThemesProvider>
     </ColorThemeProviderContext.Provider>
